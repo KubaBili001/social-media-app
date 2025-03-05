@@ -1,12 +1,9 @@
 "use client";
 
-import { Metadata } from "next";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import {
   CardHeader,
   CardTitle,
@@ -16,20 +13,39 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = {
-  title: "Sign in",
-  description: "Sign up to the site",
-};
+//regex
+const passwordRegex =
+  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-const LoginSchema = z.object({
+//form schema
+const loginSchema = z.object({
   email: z
     .string()
     .min(1, { message: "This field has to be filled." })
-    .email("This is not a valid email."),
+    .email({ message: "Invalid email address" }),
+  password: z.string().regex(passwordRegex, {
+    message:
+      "Password must be at least 8 characters long, with at least one letter, one number, and one special character.",
+  }),
 });
 
 export default function SignIn() {
+  //hooks
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  //methods
+  function onSubmit(values: z.infer<typeof loginSchema>) {
+    console.log(values);
+  }
+
   return (
     <>
       <CardHeader>

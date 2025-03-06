@@ -4,7 +4,7 @@ import redis from "./database/redis";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
   adapter: UpstashRedisAdapter(redis),
   providers: [],

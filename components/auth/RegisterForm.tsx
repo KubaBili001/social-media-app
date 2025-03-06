@@ -1,11 +1,17 @@
 "use client";
 
 //hooks
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 //validation
+import { registerSchema } from "@/schemas/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+
+//actions
+import { register } from "@/actions/register";
 
 //ui
 import { Input } from "@/components/ui/input";
@@ -18,33 +24,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-//regex
-const passwordRegex =
-  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-//form schema
-const registerSchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, { message: "This field has to be filled." })
-      .email({ message: "Invalid email address" }),
-    password: z.string().regex(passwordRegex, {
-      message:
-        "Password must be at least 8 characters long, with at least one letter, one number, and one special character.",
-    }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: "This field has to be filled." }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Provided passwords do not match",
-    path: ["confirmPassword"],
-  });
+import { toast } from "sonner";
 
 export default function RegisterForm() {
+  //state
+  const [loading, setLoading] = useState(false);
+
   //hooks
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof registerSchema>>({
     mode: "onBlur",
     resolver: zodResolver(registerSchema),
@@ -56,9 +44,25 @@ export default function RegisterForm() {
   });
 
   //methods
-  function onSubmit(values: z.infer<typeof registerSchema>) {
-    console.log(values);
-  }
+  const onSubmit = async (data: z.infer<typeof registerSchema>) => {
+    setLoading(true);
+    await register(data).then((res) => {
+      setLoading(false);
+      if (res) {
+        if (res.error) {
+          toast.error(res.error, {
+            description: "Please, try again.",
+          });
+        }
+        if (res.success) {
+          toast.success(res.success, {
+            description: "You may now sign in.",
+          });
+          router.push("sign-in");
+        }
+      }
+    });
+  };
 
   return (
     <Form {...form}>
@@ -106,8 +110,8 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
-          Submit
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? "Loading" : "Submit"}
         </Button>
       </form>
     </Form>

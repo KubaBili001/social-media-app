@@ -1,4 +1,4 @@
-const config = {
+export const config = {
   env: {
     redis: {
       url: process.env.UPSTASH_REDIS_URL,

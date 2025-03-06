@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 //validation
+import { loginSchema } from "@/schemas/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -22,24 +23,12 @@ import {
 } from "@/components/ui/form";
 
 //icons
-import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import PasswordInput from "../ui/custom/PasswordInput";
 
-//form schema
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "This field has to be filled." })
-    .email({ message: "Invalid email address" }),
-  password: z.string().min(1, { message: "This field has to be filled." }),
-});
-
 export default function LoginForm() {
   //state
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
   const [isHoveringGoogle, setIsHoveringGoogle] = useState<boolean>(false);
   const [isHoveringGitHub, setIsHoveringGitHub] = useState<boolean>(false);
 

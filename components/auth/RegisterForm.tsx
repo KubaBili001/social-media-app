@@ -121,7 +121,7 @@ export default function RegisterForm() {
           )}
         />
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Loading" : "Submit"}
+          {loading ? "Submitting..." : "Submit"}
         </Button>
       </form>
     </Form>

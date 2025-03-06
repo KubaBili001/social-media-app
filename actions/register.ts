@@ -12,9 +12,9 @@ export const register = async (
     return { error: "Invalid input data" };
   }
 
-  const { email, password, confirmPassword } = validatedData;
+  const { email, password, passwordConfirmation } = validatedData;
 
-  if (password !== confirmPassword) {
+  if (password !== passwordConfirmation) {
     return { error: "Passwords do not match" };
   }
 

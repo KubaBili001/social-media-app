@@ -23,11 +23,11 @@ export const registerSchema = z
       message:
         "Password must be at least 8 characters long, with at least one letter, one number, and one special character.",
     }),
-    confirmPassword: z
+    passwordConfirmation: z
       .string()
       .min(1, { message: "This field has to be filled." }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.passwordConfirmation, {
     message: "Provided passwords do not match",
     path: ["confirmPassword"],
   });

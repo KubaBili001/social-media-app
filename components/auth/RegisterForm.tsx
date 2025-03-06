@@ -39,29 +39,39 @@ export default function RegisterForm() {
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
+      passwordConfirmation: "",
     },
   });
 
   //methods
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     setLoading(true);
-    await register(data).then((res) => {
-      setLoading(false);
-      if (res) {
-        if (res.error) {
-          toast.error(res.error, {
-            description: "Please, try again.",
-          });
-        }
-        if (res.success) {
-          toast.success(res.success, {
-            description: "You may now sign in.",
-          });
-          router.push("sign-in");
-        }
+
+    try {
+      const res = await register(data);
+
+      if (res?.error) {
+        form.resetField("password");
+        form.resetField("passwordConfirmation");
+
+        toast.error(res.error, {
+          description: "Please, try again.",
+        });
       }
-    });
+
+      if (res?.success) {
+        toast.success(res.success, {
+          description: "You may now sign in.",
+        });
+
+        router.push("/sign-in");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again later.");
+      console.error("Registration error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -95,7 +105,7 @@ export default function RegisterForm() {
         />
         <FormField
           control={form.control}
-          name="confirmPassword"
+          name="passwordConfirmation"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Confirm password</FormLabel>

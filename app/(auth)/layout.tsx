@@ -1,7 +1,4 @@
 import { Metadata } from "next";
-import Image from "next/image";
-import Logo from "@/public/images/next-logo.webp";
-import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
   title: "Sign in",
@@ -15,7 +12,7 @@ export default function AuthLayout({
 }>) {
   return (
     <div className="w-full h-full flex flex-col gap-2 items-center justify-center">
-      <Card className="w-[400px]">{children}</Card>
+      {children}
     </div>
   );
 }

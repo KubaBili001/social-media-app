@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "../button";
+import { Input } from "../input";
 
 interface PasswordInputProps {
   placeholder: string;

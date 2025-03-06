@@ -25,7 +25,7 @@ import {
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
-import PasswordInput from "../PasswordInput";
+import PasswordInput from "../ui/custom/PasswordInput";
 
 //form schema
 const loginSchema = z.object({

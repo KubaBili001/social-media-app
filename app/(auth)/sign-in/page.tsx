@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import LoginForm from "@/components/auth/LoginForm";
 
 //ui
-import CustomCard from "@/components/CustomCard";
+import CustomCard from "@/components/ui/custom/CustomCard";
 
 export const metadata: Metadata = {
   title: "Sign in",

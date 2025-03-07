@@ -61,7 +61,7 @@ export default function RegisterForm() {
 
       if (res?.success) {
         toast.success(res.success, {
-          description: "You may now sign in.",
+          description: "Verify your email to sign in.",
         });
 
         router.push("/sign-in");

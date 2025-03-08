@@ -11,7 +11,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="w-full h-full flex flex-col gap-2 items-center justify-center">
+    <div className="w-full h-full flex flex-col gap-2 items-center justify-center overflow-y-auto ">
       {children}
     </div>
   );

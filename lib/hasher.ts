@@ -10,15 +10,11 @@ export function hashPassword(password: string, salt: string): Promise<string> {
   });
 }
 
-export async function comparePasswords({
-  password,
-  salt,
-  hashedPassword,
-}: {
-  password: string;
-  salt: string;
-  hashedPassword: string;
-}) {
+export async function comparePasswords(
+  password: string,
+  salt: string,
+  hashedPassword: string
+) {
   const inputHashedPassword = await hashPassword(password, salt);
 
   return crypto.timingSafeEqual(

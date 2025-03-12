@@ -1,4 +1,5 @@
 "use server";
+
 import * as z from "zod";
 import { getUserByEmail } from "@/data/user";
 import { signIn } from "@/auth";

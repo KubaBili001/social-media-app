@@ -7,5 +7,8 @@ export const config = {
     resend: {
       api: process.env.RESEND_API_KEY,
     },
+    auth: {
+      secret: process.env.AUTH_SECRET,
+    },
   },
 };

@@ -5,12 +5,18 @@ import Credentials from "next-auth/providers/credentials";
 import { loginSchema } from "./schemas/schemas";
 import { getUserByEmail, getUserById } from "./data/user";
 import { comparePasswords } from "./lib/hasher";
+import { config } from "./config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
   },
   adapter: UpstashRedisAdapter(redis),
+  pages: {
+    signIn: "/sign-in",
+  },
+  debug: process.env.NODE_ENV === "development",
+  secret: config.env.auth.secret,
   providers: [
     Credentials({
       async authorize(credentials) {
@@ -27,7 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
-        const passwordsMatch = await comparePasswords(
+        const passwordsMatch = comparePasswords(
           password,
           user.salt,
           user.password
@@ -70,7 +76,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const existingUser = await getUserById(token.sub);
 
       if (!existingUser) return token;
-      token.name = existingUser.name;
       token.email = existingUser.email;
 
       return token;

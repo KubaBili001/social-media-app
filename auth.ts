@@ -1,6 +1,4 @@
 import NextAuth from "next-auth";
-import { UpstashRedisAdapter } from "@auth/upstash-redis-adapter";
-import redis from "./database/redis";
 import Credentials from "next-auth/providers/credentials";
 import { loginSchema } from "./schemas/schemas";
 import { getUserByEmail, getUserById } from "./data/user";
@@ -11,7 +9,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
   },
-  adapter: UpstashRedisAdapter(redis),
   pages: {
     signIn: "/sign-in",
   },

@@ -6,14 +6,20 @@ import { Metadata } from "next";
 import LoginForm from "@/components/auth/LoginForm";
 
 //ui
-import CustomCard from "@/components/CustomCard";
+import CustomCard from "@/components/ui/custom/CustomCard";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Sign in",
   description: "Sign in to the site",
 };
 
-export default function SignIn() {
+export default async function SignIn() {
+  const session = await auth();
+
+  if (session) return redirect("/");
+
   return (
     <CustomCard
       width={400}

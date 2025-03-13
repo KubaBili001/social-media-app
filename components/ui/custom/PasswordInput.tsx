@@ -2,25 +2,22 @@
 
 import * as React from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-
-interface PasswordInputProps {
-  placeholder: string;
-  field: any;
-}
+import { Button } from "../button";
+import { Input } from "../input";
 
 export default function PasswordInput({
+  className,
+  type,
   placeholder,
-  field,
-}: PasswordInputProps) {
+  ...props
+}: React.ComponentProps<"input">) {
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
   return (
     <div className="relative">
       <Input
         type={showPassword ? "text" : "password"}
         placeholder={placeholder}
-        {...field}
+        {...props}
       />
       <Button
         type="button"

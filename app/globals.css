@@ -129,4 +129,21 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-border rounded-tr-sm rounded-br-sm;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-tr-sm rounded-br-sm;
+    background: #888;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 }

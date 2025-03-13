@@ -1,17 +1,16 @@
 "use client";
 
 //hooks
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 //validation
+import { loginSchema } from "@/schemas/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 //ui
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   Form,
   FormControl,
@@ -22,28 +21,20 @@ import {
 } from "@/components/ui/form";
 
 //icons
-import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { FaGoogle } from "react-icons/fa";
-import { FaGithub } from "react-icons/fa";
-import PasswordInput from "../PasswordInput";
-
-//form schema
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "This field has to be filled." })
-    .email({ message: "Invalid email address" }),
-  password: z.string().min(1, { message: "This field has to be filled." }),
-});
+import PasswordInput from "../ui/custom/PasswordInput";
+import OAuthForm from "./OAuthForm";
+import { login } from "@/actions/login";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   //state
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const [isHoveringGoogle, setIsHoveringGoogle] = useState<boolean>(false);
-  const [isHoveringGitHub, setIsHoveringGitHub] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   //hooks
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof loginSchema>>({
     mode: "onBlur",
     resolver: zodResolver(loginSchema),
@@ -54,9 +45,31 @@ export default function LoginForm() {
   });
 
   //methods
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values);
-  }
+  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+    setLoading(true);
+    try {
+      const res = await login(values);
+
+      if (res?.error) {
+        form.resetField("password");
+
+        toast.error(res.error, {
+          description: "Please, try again.",
+        });
+      }
+
+      if (res?.success) {
+        toast.success(res.success);
+
+        router.push("/");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again later.");
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -82,7 +95,7 @@ export default function LoginForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <PasswordInput placeholder="Your password" field={field} />
+                  <PasswordInput placeholder="Your password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -93,63 +106,7 @@ export default function LoginForm() {
           </Button>
         </form>
       </Form>
-      <div className="flex justify-between items-center">
-        <span className="w-2/5">
-          <Separator />
-        </span>
-        OR
-        <span className="w-2/5">
-          <Separator />
-        </span>
-      </div>
-      <Button
-        className="dark:bg-secondary dark:hover:bg-secondary/70 relative"
-        onMouseEnter={() => setIsHoveringGitHub((prev) => !prev)}
-        onMouseLeave={() => setIsHoveringGitHub((prev) => !prev)}
-      >
-        <div className="flex items-center justify-center w-full">
-          <FaGithub
-            fill="white"
-            className={`transition-all duration-300 ease-in-out transform ${
-              isHoveringGitHub ? "-translate-x-[80px]" : "translate-x-0"
-            }`}
-            size={18}
-          />
-          <span
-            className={`text-white absolute left-1/2 transform -translate-y-1/2 top-1/2 transition-all duration-300 ease-in-out ${
-              isHoveringGitHub
-                ? "opacity-100 translate-x-[-60px]"
-                : "opacity-0 translate-x-[20px]"
-            }`}
-          >
-            Continue with GitHub
-          </span>
-        </div>
-      </Button>
-      <Button
-        className="bg-blue-500 hover:bg-blue-500/70 relative"
-        onMouseEnter={() => setIsHoveringGoogle((prev) => !prev)}
-        onMouseLeave={() => setIsHoveringGoogle((prev) => !prev)}
-      >
-        <div className="flex items-center justify-center w-full">
-          <FaGoogle
-            fill="white"
-            className={`transition-all duration-300 ease-in-out transform ${
-              isHoveringGoogle ? "-translate-x-[80px]" : "translate-x-0"
-            }`}
-            size={18}
-          />
-          <span
-            className={`text-white absolute left-1/2 transform -translate-y-1/2 top-1/2 transition-all duration-300 ease-in-out ${
-              isHoveringGoogle
-                ? "opacity-100 translate-x-[-60px]"
-                : "opacity-0 translate-x-[20px]"
-            }`}
-          >
-            Continue with Google
-          </span>
-        </div>
-      </Button>
+      <OAuthForm loading={loading} setLoading={setLoading} />
     </>
   );
 }

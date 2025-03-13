@@ -9,7 +9,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "./ui/card";
+} from "../card";
 
 interface CardProps {
   width: number;

@@ -1,9 +1,7 @@
 import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import { loginSchema } from "./schemas/schemas";
-import { getUserByEmail, getUserById } from "./data/user";
-import { comparePasswords } from "./lib/hasher";
+import { getUserById } from "./data/user";
 import { config } from "./config";
+import authConfig from "./auth.config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -12,38 +10,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/sign-in",
   },
+
   debug: process.env.NODE_ENV === "development",
   secret: config.env.auth.secret,
-  providers: [
-    Credentials({
-      async authorize(credentials) {
-        const validatedCredentials = loginSchema.safeParse(credentials);
 
-        if (!validatedCredentials.success) {
-          return null;
-        }
+  ...authConfig,
 
-        const { email, password } = validatedCredentials.data;
-
-        const user = await getUserByEmail(email);
-        if (!user || !user.password) {
-          return null;
-        }
-
-        const passwordsMatch = comparePasswords(
-          password,
-          user.salt,
-          user.password
-        );
-
-        if (passwordsMatch) {
-          return user;
-        }
-
-        return null;
-      },
-    }),
-  ],
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") {
@@ -73,6 +45,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const existingUser = await getUserById(token.sub);
 
       if (!existingUser) return token;
+
       token.email = existingUser.email;
 
       return token;

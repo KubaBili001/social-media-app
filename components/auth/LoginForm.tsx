@@ -24,9 +24,17 @@ import {
 import PasswordInput from "../ui/custom/PasswordInput";
 import OAuthForm from "./OAuthForm";
 import { login } from "@/actions/login";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  //state
+  const [loading, setLoading] = useState(false);
+
   //hooks
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof loginSchema>>({
     mode: "onBlur",
     resolver: zodResolver(loginSchema),
@@ -38,7 +46,29 @@ export default function LoginForm() {
 
   //methods
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
-    await login(values);
+    setLoading(true);
+    try {
+      const res = await login(values);
+
+      if (res?.error) {
+        form.resetField("password");
+
+        toast.error(res.error, {
+          description: "Please, try again.",
+        });
+      }
+
+      if (res?.success) {
+        toast.success(res.success);
+
+        router.push("/");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again later.");
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -76,7 +106,7 @@ export default function LoginForm() {
           </Button>
         </form>
       </Form>
-      <OAuthForm />
+      <OAuthForm loading={loading} setLoading={setLoading} />
     </>
   );
 }

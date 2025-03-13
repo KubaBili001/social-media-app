@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import OAuthForm from "./OAuthForm";
+import Loader from "../ui/custom/Loader";
 
 export default function RegisterForm() {
   //state
@@ -127,11 +128,11 @@ export default function RegisterForm() {
             )}
           />
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Submitting..." : "Submit"}
+            {loading ? <Loader dark={false} /> : "Submit"}
           </Button>
         </form>
       </Form>
-      <OAuthForm />
+      <OAuthForm loading={loading} setLoading={setLoading} />
     </>
   );
 }

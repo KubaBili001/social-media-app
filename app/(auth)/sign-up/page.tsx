@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default async function SignUp() {
   const session = await auth();
 
-  if (session) return redirect("/");
+  if (session) return redirect("/home");
 
   return (
     <CustomCard

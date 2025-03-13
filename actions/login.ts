@@ -21,18 +21,20 @@ export const login = async (data: z.infer<typeof loginSchema>) => {
     return { error: "Invalid credentials" };
   }
 
-  const result = await signIn("credentials", {
-    email,
-    password,
-    redirect: false,
-  });
-
-  if (result?.error) {
-    switch (result.error) {
-      case "CredentialsSignin":
-        return { error: "Invalid credentials" };
-      default:
-        return { error: "An unexpected error occurred" };
+  try {
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return { error: "Invalid credentials" };
+        default:
+          return { error: "You need to verify your email before loggin in." };
+      }
     }
   }
 
@@ -40,13 +42,8 @@ export const login = async (data: z.infer<typeof loginSchema>) => {
 };
 
 export const github = async () => {
-  const result = await signIn("github", {
-    redirect: false,
+  await signIn("github", {
+    redirectTo: "/home",
   });
-
-  if (result?.error) {
-    return { error: "An unexpected OAuth error occurred" };
-  }
-
   return { success: "User logged in successfully" };
 };

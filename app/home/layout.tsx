@@ -1,11 +1,5 @@
 import { auth } from "@/auth";
-import { AppSidebar } from "@/components/SideBar";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { Separator } from "@radix-ui/react-separator";
+import { AppSidebar } from "@/components/ui/sidebar/SideBar";
 import { redirect } from "next/navigation";
 
 export default async function HomeLayout({
@@ -15,13 +9,13 @@ export default async function HomeLayout({
 }>) {
   const session = await auth();
   if (!session) return redirect("/sign-in");
+
   return (
-    <SidebarProvider>
+    <div className="flex flex-col md:flex-row w-full h-full">
       <AppSidebar />
-      <main>
-        <SidebarTrigger />
+      <main className="md:w-[calc(100%-var(--sidebar-width-md))] lg:w-[calc(100%-var(--sidebar-width-lg))] h-[calc(100%-var(--sidebar-height-sm))] md:h-full">
         {children}
       </main>
-    </SidebarProvider>
+    </div>
   );
 }

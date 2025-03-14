@@ -122,7 +122,8 @@
   }
 
   html,
-  body {
+  body,
+  main {
     @apply h-full w-full;
   }
 

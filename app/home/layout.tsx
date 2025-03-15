@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { AppSidebar } from "@/components/ui/sidebar/SideBar";
+import { AppSidebar } from "@/components/sidebar/SideBar";
 import { redirect } from "next/navigation";
 
 export default async function HomeLayout({

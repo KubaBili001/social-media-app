@@ -137,15 +137,14 @@
   }
 
   ::-webkit-scrollbar {
-    @apply w-2;
+    @apply w-[5px];
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-border rounded-tr-sm rounded-br-sm;
+    @apply bg-border;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply rounded-tr-sm rounded-br-sm;
     background: #888;
   }
 

@@ -31,12 +31,6 @@ export default function OAuthForm({
     try {
       const res = await github();
 
-      if (res?.error) {
-        toast.error(res.error, {
-          description: "Please, try again.",
-        });
-      }
-
       if (res?.success) {
         toast.success(res.success);
 

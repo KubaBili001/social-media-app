@@ -1,7 +1,6 @@
 import { ReactElement } from "react";
 
 //ui
-import { Separator } from "@radix-ui/react-separator";
 import {
   Card,
   CardHeader,
@@ -10,6 +9,7 @@ import {
   CardContent,
   CardFooter,
 } from "../card";
+import { Separator } from "../separator";
 
 interface CardProps {
   width: number;
@@ -37,7 +37,7 @@ export default function CustomCard({
       <CardContent className="flex flex-col gap-6">{content}</CardContent>
       {footer && (
         <>
-          <Separator />
+          <Separator orientation="horizontal" />
           <CardFooter className="flex justify-between">{footer}</CardFooter>
         </>
       )}

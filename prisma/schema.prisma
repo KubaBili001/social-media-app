@@ -15,6 +15,112 @@ model User {
   salt      String
   createdAt DateTime @default(now())
   emailVerified DateTime?
+
+  posts      Post[]
+  comments   Comment[]
+  likes      Like[]
+  notifications Notification[]
+  searches   Search[]
+  follows    Follow[] @relation("Following")
+  followers  Follow[] @relation("Followers")
+  messages   Message[]
+  chatUsers  ChatUser[]
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  createdBy  String
+  photo      String?
+  content    String   @db.VarChar(250)
+  postedDate DateTime @default(now())
+
+  user       User     @relation(fields: [createdBy], references: [id])
+  comments   Comment[]
+  likes      Like[]
+}
+
+model Comment {
+  id          Int      @id @default(autoincrement())
+  content     String
+  createdBy   String
+  postId      Int
+  respondingTo Int?
+  postedDate  DateTime @default(now())
+
+  user        User    @relation(fields: [createdBy], references: [id])
+  post        Post    @relation(fields: [postId], references: [id])
+}
+
+model Like {
+  postId  Int
+  userId  String
+
+  post    Post @relation(fields: [postId], references: [id])
+  user    User @relation(fields: [userId], references: [id])
+
+  @@id([postId, userId])
+}
+
+model Notification {
+  id              Int       @id @default(autoincrement())
+  userId          String
+  notificationType String
+  readDate        DateTime?
+  followUserId    String?
+  commentPostId   Int?
+  likePostId      Int?
+  notificationDate DateTime @default(now())
+
+  user            User @relation(fields: [userId], references: [id])
+}
+
+model Follow {
+  userId     String
+  followerId String
+  followDate DateTime @default(now())
+
+  user       User @relation("Following", fields: [userId], references: [id])
+  follower   User @relation("Followers", fields: [followerId], references: [id])
+
+  @@id([userId, followerId])
+}
+
+model Search {
+  userId         String
+  searchedUserId String
+  searchDate     DateTime @default(now())
+
+  user           User @relation(fields: [userId], references: [id])
+
+  @@id([userId, searchedUserId])
+}
+
+model Chat {
+  id   Int    @id @default(autoincrement())
+  name String
+  messages Message[]
+  chatUsers ChatUser[]
+}
+
+model ChatUser {
+  chatId Int
+  userId String
+
+  chat Chat @relation(fields: [chatId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([chatId, userId])
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  senderId  String
+  chatId    Int
+  content   String
+  dateSent  DateTime @default(now())
+
+  sender    User @relation(fields: [senderId], references: [id])
+  chat      Chat @relation(fields: [chatId], references: [id])
 }
 
 model VerificationToken {

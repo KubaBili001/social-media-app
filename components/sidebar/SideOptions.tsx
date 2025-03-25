@@ -7,10 +7,6 @@ import { MdHome } from "react-icons/md";
 import { IoSearch } from "react-icons/io5";
 import { FiSend } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa";
-import { MdAddCircleOutline } from "react-icons/md";
-
-//ui
-import { Button } from "../ui/button";
 
 //types
 import { SidebarExtension } from "@/enums/enums";
@@ -18,6 +14,7 @@ import { SidebarExtension } from "@/enums/enums";
 //components
 import SidebarButton from "./SidebarButton";
 import SidebarLink from "./SidebarLink";
+import CreatePostButton from "./CreatePostButton";
 
 interface SideOptionsProps {
   isExtended: SidebarExtension | null;
@@ -54,12 +51,19 @@ const SideOptions: React.FC<SideOptionsProps> = ({
         label="Search"
         icon={IoSearch}
         labelStyle={labelStyle}
+        className={
+          isExtended === SidebarExtension.SEARCH ? "border-primary" : ""
+        }
       />
-      <SidebarLink
-        href={"/messages"}
-        label={"Messages"}
+      <SidebarButton
+        isExtended={isExtended}
+        onClick={() => handleExtension(SidebarExtension.MESSAGES)}
+        label="Messages"
         icon={FiSend}
         labelStyle={labelStyle}
+        className={
+          isExtended === SidebarExtension.MESSAGES ? "border-primary" : ""
+        }
       />
       <SidebarButton
         isExtended={isExtended}
@@ -67,15 +71,11 @@ const SideOptions: React.FC<SideOptionsProps> = ({
         label="Notifications"
         icon={FaRegHeart}
         labelStyle={labelStyle}
+        className={
+          isExtended === SidebarExtension.NOTIFICATIONS ? "border-primary" : ""
+        }
       />
-      <Button
-        className="hidden md:flex items-center gap-3 md:w-full p-3 hover:bg-secondary rounded-md transition-colors ease-in hover:cursor-pointer relative"
-        variant={"clean"}
-        size={"clean"}
-      >
-        <MdAddCircleOutline className="w-6 h-6 fill-white" />
-        <span className={labelStyle}>Create a post</span>
-      </Button>
+      <CreatePostButton labelStyle={labelStyle} />
     </>
   );
 };

@@ -7,10 +7,11 @@ import { useState } from "react";
 import { SidebarExtension } from "@/enums/enums";
 
 //components
-import Search from "./Search";
-import Notifications from "./Notifications";
+import Search from "./search/Search";
+import Notifications from "./notifications/Notifications";
 import SideOptions from "./SideOptions";
 import TopOptions from "./TopOptions";
+import Messages from "./messages/Messages";
 
 export function AppSidebar() {
   //states
@@ -50,6 +51,7 @@ export function AppSidebar() {
       >
         {isExtended === SidebarExtension.SEARCH && <Search />}
         {isExtended === SidebarExtension.NOTIFICATIONS && <Notifications />}
+        {isExtended === SidebarExtension.MESSAGES && <Messages />}
       </div>
     </>
   );

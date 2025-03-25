@@ -28,7 +28,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
 }) => {
   return (
     <Button
-      className={`hidden md:flex items-center gap-3 md:w-full p-3 hover:bg-secondary rounded-md transition-colors ease-in hover:cursor-pointer relative ${className}`}
+      className={`hidden md:flex items-center p-3 border border-transparent gap-3 md:w-full hover:bg-secondary rounded-md transition-colors ease-in hover:cursor-pointer relative ${className}`}
       variant={"clean"}
       size={"clean"}
       onClick={onClick}

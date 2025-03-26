@@ -1,10 +1,33 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { FaRegImage } from "react-icons/fa6";
+import Cropper from "react-easy-crop";
 
 export const FileUpload = () => {
-  const [file, setFile] = useState<string>();
+  const [file, setFile] = useState<any>(null);
   const [fileEnter, setFileEnter] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
+  const onCropComplete = useCallback(
+    (croppedArea: any, croppedAreaPixels: any) => {
+      setCroppedAreaPixels(croppedAreaPixels);
+    },
+    []
+  );
+
+  const handleFileChange = (e: any) => {
+    const files = e.target.files;
+    if (files && files[0]) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setFile(reader.result);
+      };
+      reader.readAsDataURL(files[0]);
+    }
+  };
+
   return (
     <>
       {!file ? (
@@ -13,40 +36,26 @@ export const FileUpload = () => {
             e.preventDefault();
             setFileEnter(true);
           }}
-          onDragLeave={(e) => {
-            setFileEnter(false);
-          }}
-          onDragEnd={(e) => {
-            e.preventDefault();
-            setFileEnter(false);
-          }}
+          onDragLeave={() => setFileEnter(false)}
           onDrop={(e) => {
             e.preventDefault();
             setFileEnter(false);
-            if (e.dataTransfer.items) {
-              [...e.dataTransfer.items].forEach((item, i) => {
-                if (item.kind === "file") {
-                  const file = item.getAsFile();
-                  if (file) {
-                    let blobUrl = URL.createObjectURL(file);
-                    setFile(blobUrl);
-                  }
-                  console.log(`items file[${i}].name = ${file?.name}`);
-                }
-              });
-            } else {
-              [...e.dataTransfer.files].forEach((file, i) => {
-                console.log(`… file[${i}].name = ${file.name}`);
-              });
+            const droppedFiles = e.dataTransfer.files;
+            if (droppedFiles && droppedFiles[0]) {
+              const reader = new FileReader();
+              reader.onload = () => {
+                setFile(reader.result);
+              };
+              reader.readAsDataURL(droppedFiles[0]);
             }
           }}
-          className={`${
-            fileEnter ? "" : ""
-          } flex h-full w-full items-center justify-center cursor-pointer`}
+          className={`flex h-full w-full items-center justify-center cursor-pointer`}
         >
           <label
             htmlFor="file"
-            className="h-full flex flex-col gap-2 justify-center items-center text-center"
+            className={`${
+              fileEnter ? "text-blue-500" : ""
+            } h-full w-full flex flex-col gap-2 justify-center items-center text-center cursor-pointer`}
           >
             <FaRegImage className="h-12 w-12" />
             <span>Click or drag to upload an image</span>
@@ -54,22 +63,21 @@ export const FileUpload = () => {
           <input
             id="file"
             type="file"
+            accept="image/png, image/jpeg"
             className="hidden"
-            onChange={(e) => {
-              let files = e.target.files;
-              if (files && files[0]) {
-                let blobUrl = URL.createObjectURL(files[0]);
-                setFile(blobUrl);
-              }
-            }}
+            onChange={handleFileChange}
           />
         </div>
       ) : (
-        <div className="flex flex-col items-center">
-          <object
-            className="rounded-md w-full max-w-xs h-72"
-            data={file}
-            type="image/png"
+        <div className="relative w-full aspect-square">
+          <Cropper
+            image={file}
+            crop={crop}
+            zoom={zoom}
+            aspect={1}
+            onCropChange={setCrop}
+            onZoomChange={setZoom}
+            onCropComplete={onCropComplete}
           />
         </div>
       )}

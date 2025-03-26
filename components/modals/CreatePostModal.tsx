@@ -14,7 +14,7 @@ export default function AddPostModal() {
       onClose={createPostModal.onClose}
       isOpen={createPostModal.isOpen}
     >
-      <div className="bg-secondary p-3 flex flex-col gap-2 items-center justify-center h-full md:h-[500px]">
+      <div className="relative bg-secondary flex flex-col gap-2 items-center justify-center aspect-square">
         <FileUpload />
       </div>
     </Modal>

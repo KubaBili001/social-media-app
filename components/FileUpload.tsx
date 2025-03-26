@@ -2,19 +2,26 @@
 import { useState, useCallback } from "react";
 import { FaRegImage } from "react-icons/fa6";
 import Cropper from "react-easy-crop";
+import { getCroppedImg } from "@/utils/imageCrop";
 
-export const FileUpload = () => {
+interface FileUploadProps {
+  onCroppedImage: (image: string) => void;
+}
+
+export const FileUpload: React.FC<FileUploadProps> = ({ onCroppedImage }) => {
   const [file, setFile] = useState<any>(null);
-  const [fileEnter, setFileEnter] = useState(false);
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
+  const [fileEnter, setFileEnter] = useState<boolean>(false);
+  const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState<number>(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
   const onCropComplete = useCallback(
-    (croppedArea: any, croppedAreaPixels: any) => {
+    async (croppedArea: any, croppedAreaPixels: any) => {
       setCroppedAreaPixels(croppedAreaPixels);
+      const croppedImage = await getCroppedImg(file, croppedAreaPixels);
+      onCroppedImage(croppedImage); // Send to parent
     },
-    []
+    [file, onCroppedImage]
   );
 
   const handleFileChange = (e: any) => {

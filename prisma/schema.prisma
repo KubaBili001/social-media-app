@@ -11,7 +11,9 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
+  name      String
   password  String
+  photo     String
   salt      String
   createdAt DateTime @default(now())
   emailVerified DateTime?
@@ -30,8 +32,8 @@ model User {
 model Post {
   id         Int      @id @default(autoincrement())
   createdBy  String
-  photo      String?
-  content    String   @db.VarChar(250)
+  photo      String
+  text       String?  @db.VarChar(250)
   postedDate DateTime @default(now())
 
   user       User     @relation(fields: [createdBy], references: [id])
@@ -41,7 +43,7 @@ model Post {
 
 model Comment {
   id          Int      @id @default(autoincrement())
-  content     String
+  text        String
   createdBy   String
   postId      Int
   respondingTo Int?

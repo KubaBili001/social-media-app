@@ -13,13 +13,11 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onCroppedImage }) => {
   const [fileEnter, setFileEnter] = useState<boolean>(false);
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
   const onCropComplete = useCallback(
     async (croppedArea: any, croppedAreaPixels: any) => {
-      setCroppedAreaPixels(croppedAreaPixels);
       const croppedImage = await getCroppedImg(file, croppedAreaPixels);
-      onCroppedImage(croppedImage); // Send to parent
+      onCroppedImage(croppedImage);
     },
     [file, onCroppedImage]
   );

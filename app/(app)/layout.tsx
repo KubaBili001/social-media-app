@@ -1,6 +1,7 @@
-import { auth } from "@/auth";
-import CreatePostModal from "@/components/modals/CreatePostModal";
+import getCurrentUser from "@/actions/getCurrentUser";
+import { CreatePostModal } from "@/components/modals/create-post/CreatePostModal";
 import { AppSidebar } from "@/components/sidebar/SideBar";
+import { currentUser } from "@/types/types";
 import { redirect } from "next/navigation";
 
 export default async function HomeLayout({
@@ -8,12 +9,12 @@ export default async function HomeLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-  if (!session) return redirect("/sign-in");
+  const currentUser: currentUser = (await getCurrentUser()) as currentUser;
+  if (!currentUser) return redirect("/sign-in");
 
   return (
     <div className="flex flex-col md:flex-row w-full h-full">
-      <CreatePostModal />
+      <CreatePostModal currentUser={currentUser} />
 
       <AppSidebar />
 

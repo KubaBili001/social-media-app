@@ -25,7 +25,7 @@ export default {
 
         const passwordsMatch = comparePasswords(
           password,
-          user.salt,
+          user.salt ?? "",
           user.password
         );
 

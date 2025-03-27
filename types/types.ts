@@ -1,7 +1,7 @@
 export type user = {
   id: string;
   email: string;
-  photo: string;
+  image: string;
   password: string;
   salt: string;
   createdAt: Date;
@@ -11,6 +11,6 @@ export type user = {
 export type currentUser = {
   id: string;
   email: string;
-  photo: string;
+  image: string;
   name: string;
 };

@@ -39,7 +39,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               data: {
                 email: user.email ?? "",
                 name: user.name ?? null,
-                photo: user.image ?? null,
+                image: user.image ?? null,
                 password: null,
                 salt: null,
                 emailVerified: new Date(),

@@ -15,7 +15,7 @@ interface CreatePostModalProps {
   currentUser: {
     id: string;
     email: string;
-    photo: string;
+    image: string;
     name: string;
   };
 }

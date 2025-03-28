@@ -6,8 +6,6 @@ import { Button } from "../button";
 import { Input } from "../input";
 
 export default function PasswordInput({
-  className,
-  type,
   placeholder,
   ...props
 }: React.ComponentProps<"input">) {

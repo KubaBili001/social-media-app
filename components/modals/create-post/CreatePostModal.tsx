@@ -1,15 +1,21 @@
 "use client";
 
-import Modal from "../Modal";
+//next
+import { useState } from "react";
+
+//components
 import useCreatePostModal from "@/app/hooks/useCreatePostModal";
 import { FileUpload } from "../../FileUpload";
+import { PostForm } from "./PostForm";
+
+//icons
 import { IoMdClose } from "react-icons/io";
-import { useState } from "react";
 import { IoArrowForwardOutline } from "react-icons/io5";
 import { IoArrowBack } from "react-icons/io5";
+
+//ui
 import { Button } from "../../ui/button";
 import { Separator } from "@/components/ui/separator";
-import { PostForm } from "./PostForm";
 
 interface CreatePostModalProps {
   currentUser: {
@@ -29,6 +35,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   //hooks
   const createPostModal = useCreatePostModal();
 
+  //handlers
   const handleStepChange = (step: number) => {
     if (step === 1) {
       setCroppedImage(null);

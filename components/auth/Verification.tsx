@@ -38,12 +38,12 @@ const VerifyEmailForm = () => {
       console.log(error);
       toast.error("There was an unexpected error.");
     }
-  }, [token]);
+  }, [token, router]);
 
   useEffect(() => {
     onSubmit();
     setTimeout(() => setLoading(false), 1000);
-  }, []);
+  }, [onSubmit]);
 
   return (
     <div className="w-full h-full flex items-center justify-center">

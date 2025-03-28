@@ -19,7 +19,7 @@ export default function OAuthForm({
   setLoading,
 }: {
   loading: boolean;
-  setLoading: Function;
+  setLoading: (arg0: boolean) => void;
 }) {
   //state
   const [isHovering, setIsHovering] = useState<boolean>(false);

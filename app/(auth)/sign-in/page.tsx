@@ -27,7 +27,7 @@ export default async function SignIn() {
       content={<LoginForm />}
       footer={
         <>
-          <span>Don't have an account?</span>
+          <span>Don&apos;t have an account?</span>
           <Link href={"sign-up"} className="underline cursor-link">
             Sign up
           </Link>

@@ -10,8 +10,6 @@ export const PostForm: React.FC<PostFormProps> = ({
   imageSrc,
   currentUser,
 }) => {
-  console.log(currentUser);
-
   return (
     <div className="flex flex-col-reverse md:flex-row w-full">
       <div className="relative flex flex-col gap-2 items-center justify-center aspect-square md:min-w-[calc(100%-250px)] lg:min-w-[calc(100%-300px)] xl:min-w-[calc(100%-350px)]">

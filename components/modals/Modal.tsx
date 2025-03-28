@@ -1,7 +1,12 @@
 "use client";
 
-import { ReactElement, useCallback, useEffect, useState } from "react";
+//next
+import { ReactElement } from "react";
+
+//icons
 import { IoMdClose } from "react-icons/io";
+
+//ui
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 

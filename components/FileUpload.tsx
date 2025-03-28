@@ -1,35 +1,63 @@
 "use client";
+
 import { useState, useCallback } from "react";
-import { FaRegImage } from "react-icons/fa6";
+
+//components
 import Cropper from "react-easy-crop";
+
+//icons
+import { FaRegImage } from "react-icons/fa6";
+
+//utils
 import { getCroppedImg } from "@/utils/imageCrop";
 
 interface FileUploadProps {
   onCroppedImage: (image: string) => void;
 }
 
+interface Area {
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+}
+
 export const FileUpload: React.FC<FileUploadProps> = ({ onCroppedImage }) => {
-  const [file, setFile] = useState<any>(null);
+  const [file, setFile] = useState<string | null>(null);
   const [fileEnter, setFileEnter] = useState<boolean>(false);
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
 
   const onCropComplete = useCallback(
-    async (croppedArea: any, croppedAreaPixels: any) => {
+    async (_: Area, croppedAreaPixels: Area) => {
+      if (!file) return;
       const croppedImage = await getCroppedImg(file, croppedAreaPixels);
       onCroppedImage(croppedImage);
     },
     [file, onCroppedImage]
   );
 
-  const handleFileChange = (e: any) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files[0]) {
       const reader = new FileReader();
       reader.onload = () => {
-        setFile(reader.result);
+        setFile(reader.result as string);
       };
       reader.readAsDataURL(files[0]);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setFileEnter(false);
+    const droppedFiles = e.dataTransfer.files;
+    if (droppedFiles && droppedFiles[0]) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setFile(reader.result as string);
+      };
+      reader.readAsDataURL(droppedFiles[0]);
     }
   };
 
@@ -42,19 +70,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onCroppedImage }) => {
             setFileEnter(true);
           }}
           onDragLeave={() => setFileEnter(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setFileEnter(false);
-            const droppedFiles = e.dataTransfer.files;
-            if (droppedFiles && droppedFiles[0]) {
-              const reader = new FileReader();
-              reader.onload = () => {
-                setFile(reader.result);
-              };
-              reader.readAsDataURL(droppedFiles[0]);
-            }
-          }}
-          className={`flex h-full w-full items-center justify-center cursor-pointer`}
+          onDrop={handleDrop}
+          className="flex h-full w-full items-center justify-center cursor-pointer"
         >
           <label
             htmlFor="file"

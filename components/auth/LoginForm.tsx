@@ -23,11 +23,11 @@ import {
 //icons
 import PasswordInput from "../ui/custom/PasswordInput";
 import OAuthForm from "./OAuthForm";
-import { login } from "@/actions/login";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Loader from "../ui/custom/Loader";
+import { login } from "@/actions/auth";
 
 export default function LoginForm() {
   //state

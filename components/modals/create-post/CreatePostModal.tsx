@@ -46,6 +46,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
   const handleClose = () => {
     setStep(1);
+    setCroppedImage(null);
     createPostModal.onClose();
   };
 
@@ -56,9 +57,9 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-secondary/20 outline-none focus:outline-none">
       <div
-        className={`bg-background rounded-md relative md:h-auto w-full ${
+        className={`bg-background rounded-md relative w-full h-full md:h-auto w-full ${
           step === 2
-            ? "sm:w-[90%] md:w-[calc(50%+350px)] lg:w-[calc(40%+350px)] xl:w-[calc(33%+350px)]"
+            ? "md:w-[calc(50%+350px)] lg:w-[calc(40%+350px)] xl:w-[calc(33%+350px)]"
             : "md:w-3/6 lg:w-2/5 xl:w-2/6"
         }`}
       >
@@ -95,7 +96,11 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
           </div>
         )}
         {step === 2 && croppedImage && (
-          <PostForm imageSrc={croppedImage} currentUser={currentUser} />
+          <PostForm
+            image={croppedImage}
+            currentUser={currentUser}
+            onSubmit={handleClose}
+          />
         )}
       </div>
     </div>

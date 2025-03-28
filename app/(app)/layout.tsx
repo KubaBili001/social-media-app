@@ -1,4 +1,4 @@
-import getCurrentUser from "@/actions/getCurrentUser";
+import getCurrentUser from "@/actions/user";
 import { CreatePostModal } from "@/components/modals/create-post/CreatePostModal";
 import { AppSidebar } from "@/components/sidebar/SideBar";
 import { currentUser } from "@/types/types";

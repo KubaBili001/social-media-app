@@ -52,7 +52,7 @@ model Account {
 model Post {
   id         Int      @id @default(autoincrement())
   createdBy  String
-  photo      String
+  photo      String   
   text       String?  @db.VarChar(250)
   postedDate DateTime @default(now())
 

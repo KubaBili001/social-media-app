@@ -10,5 +10,8 @@ export const config = {
     auth: {
       secret: process.env.AUTH_SECRET,
     },
+    cloudinary: {
+      cloud_name: process.env.NEXT_PUBLIC_CLOUD_NAME,
+    },
   },
 };

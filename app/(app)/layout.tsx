@@ -1,7 +1,7 @@
 import getCurrentUser from "@/actions/user";
 import { CreatePostModal } from "@/components/modals/create-post/CreatePostModal";
 import { AppSidebar } from "@/components/sidebar/SideBar";
-import { currentUser } from "@/types/types";
+import { CurrentUser } from "@/types/types";
 import { redirect } from "next/navigation";
 
 export default async function HomeLayout({
@@ -9,11 +9,11 @@ export default async function HomeLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const currentUser: currentUser = (await getCurrentUser()) as currentUser;
+  const currentUser: CurrentUser = (await getCurrentUser()) as CurrentUser;
   if (!currentUser) return redirect("/sign-in");
 
   return (
-    <div className="flex flex-col md:flex-row w-full h-full">
+    <div className="flex flex-col md:flex-row md:justify-between w-full h-full">
       <CreatePostModal currentUser={currentUser} />
 
       <AppSidebar />

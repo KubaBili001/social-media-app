@@ -19,3 +19,40 @@ export const createPost = async (data: {
     return null;
   }
 };
+
+export const getPosts = async (data: {
+  currentUserId: string;
+  numberOfPosts: number;
+  offset: number;
+}) => {
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        OR: [
+          { createdBy: data.currentUserId },
+          {
+            createdBy: {
+              in: await prisma.follow
+                .findMany({
+                  where: {
+                    followerId: data.currentUserId,
+                  },
+                  select: { userId: true },
+                })
+                .then((followers) => followers.map((f) => f.userId)),
+            },
+          },
+        ],
+      },
+      skip: data.offset,
+      take: data.numberOfPosts,
+      orderBy: {
+        postedDate: "desc",
+      },
+    });
+
+    return posts;
+  } catch (error) {
+    return null;
+  }
+};

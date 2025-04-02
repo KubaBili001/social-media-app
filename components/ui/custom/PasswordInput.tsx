@@ -6,8 +6,6 @@ import { Button } from "../button";
 import { Input } from "../input";
 
 export default function PasswordInput({
-  className,
-  type,
   placeholder,
   ...props
 }: React.ComponentProps<"input">) {
@@ -21,7 +19,7 @@ export default function PasswordInput({
       />
       <Button
         type="button"
-        variant="ghost"
+        variant="clean"
         size="sm"
         className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent cursor-pointer"
         onClick={() => setShowPassword((prev) => !prev)}

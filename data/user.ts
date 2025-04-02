@@ -46,7 +46,6 @@ export const createUser = async (
 
     return user;
   } catch (error) {
-    console.error(error);
     return null;
   }
 };

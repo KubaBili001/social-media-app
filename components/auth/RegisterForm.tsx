@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 //actions
-import { register } from "@/actions/register";
 
 //ui
 import { Input } from "@/components/ui/input";
@@ -27,6 +26,7 @@ import {
 import { toast } from "sonner";
 import OAuthForm from "./OAuthForm";
 import Loader from "../ui/custom/Loader";
+import { register } from "@/actions/auth";
 
 export default function RegisterForm() {
   //state

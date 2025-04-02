@@ -46,6 +46,12 @@
 }
 
 :root {
+  --sidebar-width-md: 73px;
+  --sidebar-width-lg: 250px;
+  --sidebar-height-sm: 60px;
+}
+
+:root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -131,15 +137,14 @@
   }
 
   ::-webkit-scrollbar {
-    @apply w-2;
+    @apply w-[5px];
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-border rounded-tr-sm rounded-br-sm;
+    @apply bg-border;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply rounded-tr-sm rounded-br-sm;
     background: #888;
   }
 

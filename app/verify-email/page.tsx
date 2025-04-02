@@ -1,5 +1,6 @@
 import Verification from "@/components/auth/Verification";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Confirming...",
@@ -7,7 +8,11 @@ export const metadata: Metadata = {
 };
 
 const VerifyPage = async () => {
-  return <Verification />;
+  return (
+    <Suspense>
+      <Verification />
+    </Suspense>
+  );
 };
 
 export default VerifyPage;

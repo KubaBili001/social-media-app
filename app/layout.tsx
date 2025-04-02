@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { Metadata } from "next";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -21,8 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${roboto.className} antialiased`}>
-        {children}
-        <Toaster richColors closeButton />
+        <TooltipProvider>
+          {children}
+          <Toaster richColors closeButton />
+        </TooltipProvider>
       </body>
     </html>
   );

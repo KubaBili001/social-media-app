@@ -35,15 +35,15 @@ const VerifyEmailForm = () => {
         router.push("/sign-in");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("There was an unexpected error.");
     }
-  }, [token]);
+  }, [token, router]);
 
   useEffect(() => {
     onSubmit();
     setTimeout(() => setLoading(false), 1000);
-  }, []);
+  }, [onSubmit]);
 
   return (
     <div className="w-full h-full flex items-center justify-center">

@@ -10,16 +10,16 @@ import { Separator } from "@/components/ui/separator";
 import { FaGithub } from "react-icons/fa";
 import { Button } from "../ui/button";
 import Loader from "../ui/custom/Loader";
-import { github } from "@/actions/login";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { github } from "@/actions/auth";
 
 export default function OAuthForm({
   loading,
   setLoading,
 }: {
   loading: boolean;
-  setLoading: Function;
+  setLoading: (arg0: boolean) => void;
 }) {
   //state
   const [isHovering, setIsHovering] = useState<boolean>(false);
@@ -30,12 +30,6 @@ export default function OAuthForm({
     setLoading(true);
     try {
       const res = await github();
-
-      if (res?.error) {
-        toast.error(res.error, {
-          description: "Please, try again.",
-        });
-      }
 
       if (res?.success) {
         toast.success(res.success);

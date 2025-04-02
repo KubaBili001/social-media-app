@@ -11,13 +11,20 @@ import { PostForm } from "./PostForm";
 import { IoMdClose } from "react-icons/io";
 import { IoArrowForwardOutline } from "react-icons/io5";
 import { IoArrowBack } from "react-icons/io5";
+import { X } from "lucide-react";
+import { TiDelete } from "react-icons/ti";
 
 //ui
 import { Button } from "../../ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { ImageUpload } from "@/components/ImageUpload";
-import { ImageCropper } from "@/components/ImageCropper";
+import { ImageUpload } from "@/components/modals/images/ImageUpload";
+import { ImageCropper } from "@/components/modals/images/ImageCropper";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CreatePostModalProps {
   currentUser: {
@@ -62,22 +69,32 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   const header = () => {
     return (
       <div className="flex items-center justify-center relative p-3">
-        <Button
-          variant="clean"
-          className="absolute left-0 border-0 p-1 cursor-pointer"
-          onClick={step === 2 ? () => handleStepChange(1) : handleClose}
-        >
-          {step === 2 ? <IoArrowBack size={18} /> : <IoMdClose size={18} />}
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="clean"
+              className="absolute left-0 border-0 p-1 cursor-pointer"
+              onClick={step === 2 ? () => handleStepChange(1) : handleClose}
+            >
+              {step === 2 ? <IoArrowBack size={18} /> : <IoMdClose size={18} />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>back</TooltipContent>
+        </Tooltip>
 
         {croppedImage && step === 1 && (
-          <Button
-            variant="clean"
-            className="absolute right-0 border-0 p-1 cursor-pointer"
-            onClick={() => handleStepChange(2)}
-          >
-            <IoArrowForwardOutline size={18} />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="clean"
+                className="absolute right-0 border-0 p-1 cursor-pointer"
+                onClick={() => handleStepChange(2)}
+              >
+                <IoArrowForwardOutline size={18} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>next</TooltipContent>
+          </Tooltip>
         )}
 
         <span>Create new post</span>
@@ -93,21 +110,39 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
             {!image ? (
               <ImageUpload setImage={setImage} />
             ) : (
-              <ImageCropper image={image} onCroppedImage={setCroppedImage} />
+              <>
+                <ImageCropper image={image} onCroppedImage={setCroppedImage} />
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      className="absolute rounded-full bottom-2 right-2 cursor-pointer bg-background p-1"
+                      onClick={() => {
+                        setImage(null);
+                        setCroppedImage(null);
+                      }}
+                    >
+                      <X size={18} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>remove image</TooltipContent>
+                </Tooltip>
+              </>
             )}
           </>
         )}
         {croppedImage && step === 2 && (
-          <div className="flex flex-col md:flex-row h-full">
-            <div className="relative aspect-square h-full">
-              <Image src={croppedImage} alt="cropped image" fill />
+          <>
+            <div className="flex flex-col md:flex-row h-full">
+              <div className="relative aspect-square h-full">
+                <Image src={croppedImage} alt="cropped image" fill />
+              </div>
+              <PostForm
+                image={croppedImage}
+                currentUser={currentUser}
+                onSubmit={handleClose}
+              />
             </div>
-            <PostForm
-              image={croppedImage}
-              currentUser={currentUser}
-              onSubmit={handleClose}
-            />
-          </div>
+          </>
         )}
       </div>
     );

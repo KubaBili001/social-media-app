@@ -2,6 +2,7 @@
 
 import { createPost } from "@/actions/post";
 import { Button } from "@/components/ui/button";
+import Loader from "@/components/ui/custom/Loader";
 import { currentUser } from "@/types/types";
 import Image from "next/image";
 import { useState } from "react";
@@ -19,10 +20,13 @@ export const PostForm: React.FC<PostFormProps> = ({
   onSubmit,
 }) => {
   //states
-  const [text, setText] = useState("");
+  const [text, setText] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   //handlers
   const handleSubmit = async () => {
+    setIsLoading(true);
+
     if (!image) {
       toast.error("Please select an image.");
       return;
@@ -44,10 +48,12 @@ export const PostForm: React.FC<PostFormProps> = ({
       toast.success(res.success);
       onSubmit();
     }
+
+    setIsLoading(false);
   };
 
   return (
-    <div className="relative flex flex-col items-end gap-3 bg-secondary h-[250px] w-full md:h-auto md:w-[250px] lg:w-[300px] xl:w-[350px] rounded-br-md p-3">
+    <div className="relative flex flex-col items-end gap-3 h-[250px] w-full md:h-auto md:w-[250px] lg:w-[300px] xl:w-[350px] rounded-br-md p-3">
       <div className="flex gap-3 items-center w-full">
         <Image
           src={currentUser.image}
@@ -66,7 +72,7 @@ export const PostForm: React.FC<PostFormProps> = ({
       />
       <span className="text-xs text-foreground text-right">{`${text.length}/250`}</span>
       <Button className="w-32 md:w-full" onClick={handleSubmit}>
-        Post
+        {isLoading ? <Loader dark={false} /> : "Post"}
       </Button>
     </div>
   );

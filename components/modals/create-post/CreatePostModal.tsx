@@ -5,7 +5,6 @@ import { useState } from "react";
 
 //components
 import useCreatePostModal from "@/app/hooks/useCreatePostModal";
-import { FileUpload } from "../../FileUpload";
 import { PostForm } from "./PostForm";
 
 //icons
@@ -16,6 +15,9 @@ import { IoArrowBack } from "react-icons/io5";
 //ui
 import { Button } from "../../ui/button";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
+import { ImageUpload } from "@/components/ImageUpload";
+import { ImageCropper } from "@/components/ImageCropper";
 
 interface CreatePostModalProps {
   currentUser: {
@@ -29,6 +31,7 @@ interface CreatePostModalProps {
 export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   currentUser,
 }) => {
+  const [image, setImage] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [step, setStep] = useState<number>(1);
 
@@ -38,6 +41,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   //handlers
   const handleStepChange = (step: number) => {
     if (step === 1) {
+      setImage(null);
       setCroppedImage(null);
     }
 
@@ -46,6 +50,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
   const handleClose = () => {
     setStep(1);
+    setImage(null);
     setCroppedImage(null);
     createPostModal.onClose();
   };
@@ -54,54 +59,74 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
     return null;
   }
 
+  const header = () => {
+    return (
+      <div className="flex items-center justify-center relative p-3">
+        <Button
+          variant="clean"
+          className="absolute left-0 border-0 p-1 cursor-pointer"
+          onClick={step === 2 ? () => handleStepChange(1) : handleClose}
+        >
+          {step === 2 ? <IoArrowBack size={18} /> : <IoMdClose size={18} />}
+        </Button>
+
+        {croppedImage && step === 1 && (
+          <Button
+            variant="clean"
+            className="absolute right-0 border-0 p-1 cursor-pointer"
+            onClick={() => handleStepChange(2)}
+          >
+            <IoArrowForwardOutline size={18} />
+          </Button>
+        )}
+
+        <span>Create new post</span>
+      </div>
+    );
+  };
+
+  const body = () => {
+    return (
+      <div className="relative aspect-square bg-secondary h-full">
+        {step === 1 && (
+          <>
+            {!image ? (
+              <ImageUpload setImage={setImage} />
+            ) : (
+              <ImageCropper image={image} onCroppedImage={setCroppedImage} />
+            )}
+          </>
+        )}
+        {croppedImage && step === 2 && (
+          <div className="flex flex-col md:flex-row h-full">
+            <div className="relative aspect-square h-full">
+              <Image src={croppedImage} alt="cropped image" fill />
+            </div>
+            <PostForm
+              image={croppedImage}
+              currentUser={currentUser}
+              onSubmit={handleClose}
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-secondary/20 outline-none focus:outline-none">
       <div
-        className={`bg-background rounded-md relative w-full h-full md:h-auto w-full ${
-          step === 2
-            ? "md:w-[calc(50%+350px)] lg:w-[calc(40%+350px)] xl:w-[calc(33%+350px)]"
-            : "md:w-3/6 lg:w-2/5 xl:w-2/6"
-        }`}
+        className={`bg-background rounded-md relative w-full h-auto md:h-[500px] md:w-auto transition-[width]`}
       >
         {/* HEADER */}
-        <div className="flex items-center justify-center relative p-3">
-          <Button
-            variant="clean"
-            className="absolute left-0 border-0 p-1 cursor-pointer"
-            onClick={step === 2 ? () => handleStepChange(1) : handleClose}
-          >
-            {step === 2 ? <IoArrowBack size={18} /> : <IoMdClose size={18} />}
-          </Button>
 
-          {croppedImage && step === 1 && (
-            <Button
-              variant="clean"
-              className="absolute right-0 border-0 p-1 cursor-pointer"
-              onClick={() => handleStepChange(2)}
-            >
-              <IoArrowForwardOutline size={18} />
-            </Button>
-          )}
-
-          <span>Create new post</span>
-        </div>
+        {header()}
 
         <Separator orientation="horizontal" />
 
         {/* BODY */}
 
-        {step === 1 && (
-          <div className="relative bg-secondary flex flex-col gap-2 items-center justify-center aspect-square">
-            <FileUpload onCroppedImage={setCroppedImage} />
-          </div>
-        )}
-        {step === 2 && croppedImage && (
-          <PostForm
-            image={croppedImage}
-            currentUser={currentUser}
-            onSubmit={handleClose}
-          />
-        )}
+        {body()}
       </div>
     </div>
   );

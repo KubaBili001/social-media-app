@@ -35,7 +35,7 @@ const VerifyEmailForm = () => {
         router.push("/sign-in");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("There was an unexpected error.");
     }
   }, [token, router]);

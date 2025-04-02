@@ -1,38 +1,35 @@
-export const getCroppedImg = async (imageSrc: string, crop: any) => {
-  const image = await createImage(imageSrc);
+import { Area } from "react-easy-crop";
+
+export const getCroppedImg = async (image: string, croppedAreaPixels: Area) => {
+  const imageObj = new Image();
+  imageObj.src = image;
+  await new Promise((resolve) => {
+    imageObj.onload = resolve;
+  });
+
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  canvas.width = crop.width;
-  canvas.height = crop.height;
+  if (!ctx) {
+    throw new Error("Failed to get canvas context");
+  }
 
-  ctx!.drawImage(
-    image,
-    crop.x,
-    crop.y,
-    crop.width,
-    crop.height,
+  canvas.width = croppedAreaPixels.width;
+  canvas.height = croppedAreaPixels.height;
+
+  ctx.drawImage(
+    imageObj,
+    croppedAreaPixels.x,
+    croppedAreaPixels.y,
+    croppedAreaPixels.width,
+    croppedAreaPixels.height,
     0,
     0,
-    crop.width,
-    crop.height
+    croppedAreaPixels.width,
+    croppedAreaPixels.height
   );
 
-  return new Promise<string>((resolve) => {
-    canvas.toBlob((blob) => {
-      if (!blob) return;
-      const fileUrl = URL.createObjectURL(blob);
-      resolve(fileUrl);
-    }, "image/jpeg");
-  });
-};
+  const base64String = canvas.toDataURL("image/png");
 
-function createImage(url: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const image = new Image();
-    image.addEventListener("load", () => resolve(image));
-    image.addEventListener("error", (error) => reject(error));
-    image.setAttribute("crossOrigin", "anonymous"); // for CORS issues
-    image.src = url;
-  });
-}
+  return base64String;
+};

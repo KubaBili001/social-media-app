@@ -3,13 +3,12 @@
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { Readable } from "stream";
 import cloudinary from "@/lib/cloudinary";
 import { createPost as create } from "@/data/post";
 
 const schema = z.object({
   text: z.string().max(250).optional(),
-  image: z.instanceof(File),
+  image: z.string(),
 });
 
 export async function createPost(formData: FormData) {
@@ -25,28 +24,15 @@ export async function createPost(formData: FormData) {
     image: formData.get("image"),
   });
 
-  console.log(formData);
-
   if (!parsed.success) {
     return { error: "Invalid post data." };
   }
 
   const { text, image } = parsed.data;
 
-  // Convert File to Buffer
-  const arrayBuffer = await image.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-
-  const uploadResult = await new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      { folder: "your_folder_name" },
-      (error, result) => {
-        if (error) reject(error);
-        else resolve(result);
-      }
-    );
-
-    Readable.from(buffer).pipe(uploadStream);
+  const uploadResult = await cloudinary.uploader.upload(image, {
+    folder: "user-posts",
+    resource_type: "image",
   });
 
   if (

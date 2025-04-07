@@ -1,10 +1,10 @@
 "use client";
 
-import { getPosts } from "@/actions/post";
 import { CurrentUser, PostWithMeta } from "@/types/types";
 import { useEffect, useState } from "react";
 import { Post } from "./Post";
 import { usePathname } from "next/navigation";
+import { getPosts } from "@/actions/posts/get-posts";
 
 interface PostsProps {
   currentUser: CurrentUser;

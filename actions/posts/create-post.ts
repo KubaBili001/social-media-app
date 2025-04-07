@@ -1,15 +1,10 @@
 "use server";
 
 import { auth } from "@/auth";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import cloudinary from "@/lib/cloudinary";
-import { createPost as create, getPosts as get } from "@/data/post";
-
-const schema = z.object({
-  text: z.string().max(250).optional(),
-  image: z.string(),
-});
+import { postSchema } from "@/schemas/schemas";
+import { createPost as create } from "@/data/post";
+import { revalidatePath } from "next/cache";
 
 export async function createPost(formData: FormData) {
   const session = await auth();
@@ -19,7 +14,7 @@ export async function createPost(formData: FormData) {
     return { error: "Unauthorized." };
   }
 
-  const parsed = schema.safeParse({
+  const parsed = postSchema.safeParse({
     text: formData.get("text"),
     image: formData.get("image"),
   });
@@ -58,21 +53,4 @@ export async function createPost(formData: FormData) {
   revalidatePath("/home");
 
   return { success: "Post successfully created." };
-}
-
-export async function getPosts(data: {
-  currentUserId: string;
-  numberOfPosts: number;
-  offset: number;
-}) {
-  const session = await auth();
-  const userId = session?.user?.id;
-
-  if (!userId) {
-    return null;
-  }
-
-  const posts = await get(data);
-
-  return posts;
 }

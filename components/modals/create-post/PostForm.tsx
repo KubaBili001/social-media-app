@@ -1,6 +1,6 @@
 "use client";
 
-import { createPost } from "@/actions/post";
+import { createPost } from "@/actions/posts/create-post";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/custom/Loader";
 import { CurrentUser } from "@/types/types";

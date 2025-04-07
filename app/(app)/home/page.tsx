@@ -1,5 +1,5 @@
-import getCurrentUser from "@/actions/user";
-import { Posts } from "@/components/home-page/Posts";
+import getCurrentUser from "@/actions/users/user";
+import { Posts } from "@/components/home-page/posts/Posts";
 import { CurrentUser } from "@/types/types";
 
 export default async function Home() {

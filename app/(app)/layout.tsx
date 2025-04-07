@@ -18,9 +18,7 @@ export default async function HomeLayout({
 
       <AppSidebar />
 
-      <main className="md:w-[calc(100%-var(--sidebar-width-md))] lg:w-[calc(100%-var(--sidebar-width-lg))] h-[calc(100%-var(--sidebar-height-sm))] md:h-full">
-        {children}
-      </main>
+      <main className="w-full">{children}</main>
     </div>
   );
 }

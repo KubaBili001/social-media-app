@@ -3,14 +3,14 @@
 import { createPost } from "@/actions/post";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/custom/Loader";
-import { currentUser } from "@/types/types";
+import { CurrentUser } from "@/types/types";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 
 interface PostFormProps {
   image: string;
-  currentUser: currentUser;
+  currentUser: CurrentUser;
   onSubmit: () => void;
 }
 
@@ -71,7 +71,11 @@ export const PostForm: React.FC<PostFormProps> = ({
         className="w-full resize-none outline-none text-sm h-full"
       />
       <span className="text-xs text-foreground text-right">{`${text.length}/250`}</span>
-      <Button className="w-32 md:w-full" onClick={handleSubmit}>
+      <Button
+        className="w-32 md:w-full"
+        onClick={handleSubmit}
+        disabled={isLoading}
+      >
         {isLoading ? <Loader dark={false} /> : "Post"}
       </Button>
     </div>

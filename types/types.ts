@@ -22,3 +22,18 @@ export type Post = {
   text: string | null;
   postedDate: Date;
 };
+
+export type PostWithMeta = {
+  id: number;
+  photo: string;
+  text: string | null;
+  postedDate: Date;
+  createdBy: string;
+  user: {
+    id: string;
+    name: string | null;
+    image: string | null;
+  };
+  likedByCurrentUser: boolean;
+  likesCount: number;
+};

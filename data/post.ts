@@ -26,22 +26,22 @@ export const getPosts = async (data: {
   offset: number;
 }) => {
   try {
+    const followedUserIds = await prisma.follow.findMany({
+      where: {
+        followerId: data.currentUserId,
+      },
+      select: {
+        userId: true,
+      },
+    });
+
+    const followedIds = followedUserIds.map((f) => f.userId);
+
     const posts = await prisma.post.findMany({
       where: {
         OR: [
           { createdBy: data.currentUserId },
-          {
-            createdBy: {
-              in: await prisma.follow
-                .findMany({
-                  where: {
-                    followerId: data.currentUserId,
-                  },
-                  select: { userId: true },
-                })
-                .then((followers) => followers.map((f) => f.userId)),
-            },
-          },
+          { createdBy: { in: followedIds } },
         ],
       },
       skip: data.offset,
@@ -49,10 +49,39 @@ export const getPosts = async (data: {
       orderBy: {
         postedDate: "desc",
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+        likes: {
+          where: {
+            userId: data.currentUserId,
+          },
+          select: {
+            userId: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+      },
     });
 
-    return posts;
+    const result = posts.map((post) => ({
+      ...post,
+      likedByCurrentUser: post.likes.length > 0,
+      likesCount: post._count.likes,
+    }));
+
+    return result;
   } catch (error) {
+    console.error(error);
     return null;
   }
 };

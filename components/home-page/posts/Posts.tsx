@@ -31,6 +31,8 @@ export const Posts: React.FC<PostsProps> = ({ currentUser, posts }) => {
 
   useEffect(() => {
     setNewPosts(posts);
+    setPage(2);
+    setHasMore(true);
   }, [posts]);
 
   useEffect(() => {
@@ -40,7 +42,6 @@ export const Posts: React.FC<PostsProps> = ({ currentUser, posts }) => {
   }, [inView]);
 
   //methods
-
   const loadMoreUsers = async () => {
     const res = await getPosts(page);
     if (res.length === 0) {

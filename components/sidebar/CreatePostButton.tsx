@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 
 //icons
 import { MdAddCircleOutline } from "react-icons/md";
-import useAddPostModal from "@/app/hooks/useCreatePostModal";
+import useAddPostModal from "@/hooks/useCreatePostModal";
 
 interface CreatePostButtonProps {
   labelStyle: string;

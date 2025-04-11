@@ -10,6 +10,7 @@ import { CurrentUser, PostWithMeta } from "@/types/types";
 //components
 import { LikeButton } from "./LikeButton";
 import { CommentButton } from "./CommentButton";
+import Link from "next/link";
 
 interface PostProps {
   post: PostWithMeta;
@@ -61,9 +62,12 @@ export const Post: React.FC<PostProps> = ({ post, currentUser }) => {
             {post.text}
           </span>
         )}
-        <button className="text-sm underline text-sidebar-ring cursor-pointer w-fit">
+        <Link
+          className="text-sm underline text-sidebar-ring cursor-pointer w-fit"
+          href={`post/${post.id}`}
+        >
           View all comments
-        </button>
+        </Link>
       </div>
     </div>
   );

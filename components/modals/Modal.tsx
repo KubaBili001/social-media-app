@@ -1,32 +1,21 @@
 "use client";
 
-//next
 import { ReactElement } from "react";
 
-//icons
-import { IoMdClose } from "react-icons/io";
-
-//ui
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
-
 interface ModalProps {
-  onClose: () => void;
-  title?: string;
   isOpen?: boolean;
-  children: ReactElement;
+  header?: ReactElement;
+  body?: ReactElement;
+  footer?: ReactElement;
 }
 
 export default function Modal({
-  onClose,
-  title,
   isOpen,
-  children,
+  header,
+  body,
+  footer,
 }: ModalProps): ReactElement | null {
-  // Handlers
-  const handleClose = () => {
-    onClose();
-  };
+  // State
 
   if (!isOpen) {
     return null;
@@ -35,23 +24,15 @@ export default function Modal({
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-secondary/20 outline-none focus:outline-none">
-        <div className="bg-background rounded-md relative mx-auto my-6 w-full md:h-auto md:w-3/6 lg:h-auto lg:w-2/5 xl:w-2/6">
+        <div className="bg-background rounded-md relative w-full h-auto md:h-[500px] md:w-auto transition-[width]">
           {/* HEADER */}
-          <div className="flex items-center justify-center relative p-3">
-            <Button
-              variant="clean"
-              className="absolute right-3 border-0 p-1 cursor-pointer"
-              onClick={handleClose}
-            >
-              <IoMdClose size={18} />
-            </Button>
+          {header}
 
-            <div>{title}</div>
-          </div>
+          {/* BODY */}
+          {body}
 
-          <Separator orientation="horizontal" />
-
-          {children}
+          {/* FOOTER */}
+          {footer}
         </div>
       </div>
     </>

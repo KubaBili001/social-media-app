@@ -4,7 +4,7 @@
 import { useState } from "react";
 
 //components
-import useCreatePostModal from "@/app/hooks/useCreatePostModal";
+import useCreatePostModal from "@/hooks/useCreatePostModal";
 import { PostForm } from "./PostForm";
 
 //icons
@@ -12,20 +12,19 @@ import { IoMdClose } from "react-icons/io";
 import { IoArrowForwardOutline } from "react-icons/io5";
 import { IoArrowBack } from "react-icons/io5";
 import { X } from "lucide-react";
-import { TiDelete } from "react-icons/ti";
 
 //ui
 import { Button } from "../../ui/button";
-import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { ImageUpload } from "@/components/modals/images/ImageUpload";
-import { ImageCropper } from "@/components/modals/images/ImageCropper";
+import { ImageUpload } from "@/components/images/ImageUpload";
+import { ImageCropper } from "@/components/images/ImageCropper";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { CurrentUser } from "@/types/types";
+import Modal from "../Modal";
 
 interface CreatePostModalProps {
   currentUser: CurrentUser;
@@ -34,11 +33,11 @@ interface CreatePostModalProps {
 export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   currentUser,
 }) => {
+  //hooks
   const [image, setImage] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [step, setStep] = useState<number>(1);
 
-  //hooks
   const createPostModal = useCreatePostModal();
 
   //handlers
@@ -58,10 +57,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
     createPostModal.onClose();
   };
 
-  if (!createPostModal.isOpen) {
-    return null;
-  }
-
+  //content
   const header = () => {
     return (
       <div className="flex items-center justify-center relative p-3">
@@ -145,20 +141,6 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-secondary/20 outline-none focus:outline-none">
-      <div
-        className={`bg-background rounded-md relative w-full h-auto md:h-[500px] md:w-auto transition-[width]`}
-      >
-        {/* HEADER */}
-
-        {header()}
-
-        <Separator orientation="horizontal" />
-
-        {/* BODY */}
-
-        {body()}
-      </div>
-    </div>
+    <Modal body={body()} header={header()} isOpen={createPostModal.isOpen} />
   );
 };

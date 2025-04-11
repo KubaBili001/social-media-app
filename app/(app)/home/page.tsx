@@ -10,7 +10,6 @@ import getCurrentUser from "@/actions/users/user";
 
 //types
 import { CurrentUser } from "@/types/types";
-import Loader from "@/components/ui/custom/Loader";
 
 export const metadata: Metadata = {
   title: "Home page",

@@ -6,8 +6,10 @@ import { redirect } from "next/navigation";
 
 export default async function HomeLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   const currentUser: CurrentUser = (await getCurrentUser()) as CurrentUser;
   if (!currentUser) return redirect("/sign-in");
@@ -15,6 +17,8 @@ export default async function HomeLayout({
   return (
     <div className="flex flex-col md:flex-row md:justify-between w-full h-full">
       <CreatePostModal currentUser={currentUser} />
+
+      {modal}
 
       <aside>
         <AppSidebar />

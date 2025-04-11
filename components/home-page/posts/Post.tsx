@@ -1,9 +1,15 @@
 "use client";
 
-import { CurrentUser, PostWithMeta } from "@/types/types";
-import Image from "next/image";
-import { LikeButton } from "./LikeButton";
+//next
 import { useState } from "react";
+import Image from "next/image";
+
+//types
+import { CurrentUser, PostWithMeta } from "@/types/types";
+
+//components
+import { LikeButton } from "./LikeButton";
+import { CommentButton } from "./CommentButton";
 
 interface PostProps {
   post: PostWithMeta;
@@ -11,17 +17,18 @@ interface PostProps {
 }
 
 export const Post: React.FC<PostProps> = ({ post, currentUser }) => {
+  //hooks
   const [numberOfLikes, setNumberOfLikes] = useState(post.likesCount);
 
   return (
-    <div className="w-[600px] flex flex-col items-center border rounded-md">
+    <div className="w-[500px] flex flex-col items-center">
       {/* HEADER */}
-      <div className="flex items-center gap-2 p-3 w-full">
+      <div className="flex items-center gap-2 py-3 w-full">
         <Image
           src={post.user.image ?? ""}
           alt="Creator profile picture"
           width={30}
-          height={25}
+          height={30}
           className="rounded-full"
         />
         <span className="text-sm">{post.user.name}</span>
@@ -31,25 +38,32 @@ export const Post: React.FC<PostProps> = ({ post, currentUser }) => {
 
       {/* BODY */}
       <div className="relative w-full aspect-square">
-        <Image src={post.photo} alt="user photo" fill />
+        <Image src={post.photo} alt="user photo" fill className="rounded-sm" />
       </div>
 
       {/* FOOTER */}
-      {post.text && (
-        <span className="w-full h-fit max-h-[100px] p-3 break-words text-sm">
-          {post.text}
-        </span>
-      )}
-      <div className="flex w-full gap-2 p-3 items-center">
-        <LikeButton
-          currentUserId={currentUser.id}
-          postId={post.id}
-          isLiked={post.likedByCurrentUser}
-          setNumberOfLikes={setNumberOfLikes}
-        />
+      <div className="flex flex-col gap-2 w-full py-2">
+        <div className="flex w-full gap-3 items-center">
+          <LikeButton
+            currentUserId={currentUser.id}
+            postId={post.id}
+            isLiked={post.likedByCurrentUser}
+            setNumberOfLikes={setNumberOfLikes}
+          />
+          <CommentButton hasUserCommented={post.commentedByCurrentUser} />
+        </div>
         <span className="text-sm">
-          {numberOfLikes} {numberOfLikes === 1 ? "like." : "likes."}
+          {numberOfLikes} {numberOfLikes === 1 ? "like" : "likes"}
         </span>
+        {post.text && (
+          <span className="break-words w-full text-sm">
+            <span className="font-bold">{post.user.name}</span> &#x2022;{" "}
+            {post.text}
+          </span>
+        )}
+        <button className="text-sm underline text-sidebar-ring cursor-pointer w-fit">
+          View all comments
+        </button>
       </div>
     </div>
   );

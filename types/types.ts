@@ -25,15 +25,19 @@ export type Post = {
 
 export type PostWithMeta = {
   id: number;
+  createdBy: string;
   photo: string;
   text: string | null;
   postedDate: Date;
-  createdBy: string;
+
   user: {
     id: string;
     name: string | null;
     image: string | null;
   };
+
   likedByCurrentUser: boolean;
   likesCount: number;
+  commentsCount: number;
+  commentedByCurrentUser: boolean;
 };

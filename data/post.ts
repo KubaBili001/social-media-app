@@ -65,9 +65,18 @@ export const getPosts = async (data: {
             userId: true,
           },
         },
+        comments: {
+          where: {
+            createdBy: data.currentUserId,
+          },
+          select: {
+            id: true,
+          },
+        },
         _count: {
           select: {
             likes: true,
+            comments: true,
           },
         },
       },
@@ -77,6 +86,8 @@ export const getPosts = async (data: {
       ...post,
       likedByCurrentUser: post.likes.length > 0,
       likesCount: post._count.likes,
+      commentsCount: post._count.comments,
+      commentedByCurrentUser: post.comments.length > 0,
     }));
 
     return result;

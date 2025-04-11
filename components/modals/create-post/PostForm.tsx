@@ -1,11 +1,18 @@
 "use client";
 
-import { createPost } from "@/actions/posts/create-post";
-import { Button } from "@/components/ui/button";
-import Loader from "@/components/ui/custom/Loader";
-import { CurrentUser } from "@/types/types";
+//next
 import Image from "next/image";
 import { useState } from "react";
+
+//actions
+import { createPost } from "@/actions/posts/create-post";
+
+//types
+import { CurrentUser } from "@/types/types";
+
+//ui
+import { Button } from "@/components/ui/button";
+import Loader from "@/components/ui/custom/Loader";
 import { toast } from "sonner";
 
 interface PostFormProps {
@@ -19,7 +26,7 @@ export const PostForm: React.FC<PostFormProps> = ({
   currentUser,
   onSubmit,
 }) => {
-  //states
+  //hooks
   const [text, setText] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -46,6 +53,7 @@ export const PostForm: React.FC<PostFormProps> = ({
 
     if (res?.success) {
       toast.success(res.success);
+
       onSubmit();
     }
 

@@ -1,9 +1,8 @@
 "use client";
 
 import { changeLike } from "@/actions/posts/like";
+import { Heart } from "lucide-react";
 import { useState } from "react";
-import { FaRegHeart } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
 import { toast } from "sonner";
 
 interface LikeButtonProps {
@@ -43,9 +42,9 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
   return (
     <div onClick={handleClick} className="cursor-pointer">
       {liked ? (
-        <FaHeart className="fill-red-500 w-6 h-6" />
+        <Heart className="fill-red-500 text-red-500 w-6 h-6" />
       ) : (
-        <FaRegHeart className="w-6 h-6" />
+        <Heart className="w-6 h-6" />
       )}
     </div>
   );

@@ -16,7 +16,9 @@ export default async function HomeLayout({
     <div className="flex flex-col md:flex-row md:justify-between w-full h-full">
       <CreatePostModal currentUser={currentUser} />
 
-      <AppSidebar />
+      <aside>
+        <AppSidebar />
+      </aside>
 
       <main className="w-full">{children}</main>
     </div>

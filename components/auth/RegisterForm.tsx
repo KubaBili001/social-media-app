@@ -26,7 +26,7 @@ import {
 import { toast } from "sonner";
 import OAuthForm from "./OAuthForm";
 import Loader from "../ui/custom/Loader";
-import { register } from "@/actions/auth";
+import { register } from "@/actions/auth/user-register.ts";
 
 export default function RegisterForm() {
   //state

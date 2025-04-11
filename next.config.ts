@@ -7,7 +7,13 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
       },
+      { protocol: "https", hostname: "res.cloudinary.com" },
     ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "2mb",
+    },
   },
   webpack: (config) => {
     config.optimization.minimize = false;

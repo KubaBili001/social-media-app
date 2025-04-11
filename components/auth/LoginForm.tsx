@@ -27,7 +27,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Loader from "../ui/custom/Loader";
-import { login } from "@/actions/auth";
+import { login } from "@/actions/auth/user-login";
 
 export default function LoginForm() {
   //state

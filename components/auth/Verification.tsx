@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
-import { newVerification } from "@/actions/token-verification";
+import { newVerification } from "@/actions/auth/token-verification";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 

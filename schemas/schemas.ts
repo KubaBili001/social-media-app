@@ -31,3 +31,8 @@ export const registerSchema = z
     message: "Provided passwords do not match",
     path: ["confirmPassword"],
   });
+
+export const postSchema = z.object({
+  text: z.string().max(250).optional(),
+  image: z.string(),
+});

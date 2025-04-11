@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 import Loader from "../ui/custom/Loader";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { github } from "@/actions/auth";
+import { github } from "@/actions/auth/github-login";
 
 export default function OAuthForm({
   loading,

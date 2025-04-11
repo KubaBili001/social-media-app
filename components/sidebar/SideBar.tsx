@@ -31,11 +31,11 @@ export function AppSidebar() {
   return (
     <>
       <div
-        className={`relative z-1 flex md:flex-col gap-3 items-center justify-end md:justify-start lg:transition-[width] md:items-start p-3 border-b md:border-b-0 border-border w-full md:w-[var(--sidebar-width-md)] ${
+        className={`fixed top-0 z-1 flex md:flex-col gap-3 items-center justify-end md:justify-start lg:transition-[width] md:items-start p-3 border-b md:border-b-0 border-border w-full md:w-[var(--sidebar-width-md)] ${
           isExtended
             ? "lg:w-[var(--sidebar-width-md)]"
             : "lg:w-[var(--sidebar-width-lg)] md:border-r"
-        } h-[var(--sidebar-height-sm)] md:h-full`}
+        } h-[var(--sidebar-height-sm)] md:h-screen bg-background`}
       >
         <SideOptions
           isExtended={isExtended}

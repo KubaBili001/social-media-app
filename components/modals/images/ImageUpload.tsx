@@ -1,5 +1,6 @@
 "use client";
 
+//next
 import { useState } from "react";
 
 //icons
@@ -10,8 +11,10 @@ interface ImageUploadProps {
 }
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({ setImage }) => {
+  //hooks
   const [fileEnter, setFileEnter] = useState<boolean>(false);
 
+  //handlers
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files[0]) {

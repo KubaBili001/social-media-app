@@ -25,14 +25,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { CurrentUser } from "@/types/types";
 
 interface CreatePostModalProps {
-  currentUser: {
-    id: string;
-    email: string;
-    image: string;
-    name: string;
-  };
+  currentUser: CurrentUser;
 }
 
 export const CreatePostModal: React.FC<CreatePostModalProps> = ({

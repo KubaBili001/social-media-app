@@ -124,7 +124,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
         )}
         {croppedImage && step === 2 && (
           <>
-            <div className="flex flex-col md:flex-row h-full">
+            <div className="flex h-full">
               <div className="relative aspect-square h-full">
                 <Image src={croppedImage} alt="cropped image" fill />
               </div>

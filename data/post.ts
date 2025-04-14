@@ -22,8 +22,8 @@ export const createPost = async (data: {
 
 export const getPosts = async (data: {
   currentUserId: string;
-  numberOfPosts: number;
-  offset: number;
+  take: number;
+  skip: number;
 }) => {
   try {
     const followedUserIds = await prisma.follow.findMany({
@@ -44,8 +44,8 @@ export const getPosts = async (data: {
           { createdBy: { in: followedIds } },
         ],
       },
-      skip: data.offset,
-      take: data.numberOfPosts,
+      skip: data.skip,
+      take: data.take,
       orderBy: {
         postedDate: "desc",
       },
@@ -57,22 +57,6 @@ export const getPosts = async (data: {
             image: true,
           },
         },
-        likes: {
-          where: {
-            userId: data.currentUserId,
-          },
-          select: {
-            userId: true,
-          },
-        },
-        comments: {
-          where: {
-            createdBy: data.currentUserId,
-          },
-          select: {
-            id: true,
-          },
-        },
         _count: {
           select: {
             likes: true,
@@ -82,15 +66,93 @@ export const getPosts = async (data: {
       },
     });
 
+    const postIds = posts.map((post) => post.id);
+
+    const userLikes = await prisma.like.findMany({
+      where: {
+        userId: data.currentUserId,
+        postId: { in: postIds },
+      },
+      select: {
+        postId: true,
+      },
+    });
+
+    const userComments = await prisma.comment.findMany({
+      where: {
+        createdBy: data.currentUserId,
+        postId: { in: postIds },
+      },
+      select: {
+        postId: true,
+      },
+      distinct: ["postId"],
+    });
+
+    const likedPostIds = new Set(userLikes.map((like) => like.postId));
+    const commentedPostIds = new Set(
+      userComments.map((comment) => comment.postId)
+    );
+
     const result = posts.map((post) => ({
       ...post,
-      likedByCurrentUser: post.likes.length > 0,
+      hasLiked: likedPostIds.has(post.id),
+      hasCommented: commentedPostIds.has(post.id),
       likesCount: post._count.likes,
       commentsCount: post._count.comments,
-      commentedByCurrentUser: post.comments.length > 0,
     }));
 
     return result;
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return null;
+  }
+};
+
+export const getPostById = async (postId: number, currentUserId: string) => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+      },
+    });
+
+    if (!post) return null;
+
+    const [likesCount, commentsCount, hasLiked, hasCommented] =
+      await Promise.all([
+        prisma.like.count({ where: { postId } }),
+        prisma.comment.count({ where: { postId } }),
+        prisma.like.findFirst({
+          where: {
+            postId,
+            userId: currentUserId,
+          },
+          select: { postId: true },
+        }),
+        prisma.comment.findFirst({
+          where: {
+            postId,
+            createdBy: currentUserId,
+          },
+          select: { id: true },
+        }),
+      ]);
+
+    return {
+      ...post,
+      likesCount,
+      commentsCount,
+      hasLiked: !!hasLiked,
+      hasCommented: !!hasCommented,
+    };
   } catch (error) {
     console.error(error);
     return null;

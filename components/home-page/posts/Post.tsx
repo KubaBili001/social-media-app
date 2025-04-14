@@ -48,10 +48,10 @@ export const Post: React.FC<PostProps> = ({ post, currentUser }) => {
           <LikeButton
             currentUserId={currentUser.id}
             postId={post.id}
-            isLiked={post.likedByCurrentUser}
+            isLiked={post.hasLiked}
             setNumberOfLikes={setNumberOfLikes}
           />
-          <CommentButton hasUserCommented={post.commentedByCurrentUser} />
+          <CommentButton hasUserCommented={post.hasCommented} />
         </div>
         <span className="text-sm">
           {numberOfLikes} {numberOfLikes === 1 ? "like" : "likes"}

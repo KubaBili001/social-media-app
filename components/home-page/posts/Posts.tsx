@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Post } from "./Post";
 import { getPosts } from "@/actions/posts/get-posts";
 import Loader from "@/components/ui/custom/Loader";
+import { toast } from "sonner";
 
 interface PostsProps {
   posts: PostWithMeta[];
@@ -27,6 +28,7 @@ export const Posts: React.FC<PostsProps> = ({ currentUser, posts }) => {
   const [page, setPage] = useState(2);
   const [newPosts, setNewPosts] = useState<PostWithMeta[]>(posts);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { ref, inView } = useInView();
 
   useEffect(() => {
@@ -37,20 +39,28 @@ export const Posts: React.FC<PostsProps> = ({ currentUser, posts }) => {
 
   useEffect(() => {
     if (inView && hasMore) {
-      loadMoreUsers();
+      loadMorePosts();
     }
   }, [inView]);
 
   //methods
-  const loadMoreUsers = async () => {
-    const res = await getPosts(page);
-    if (res.length === 0) {
-      setHasMore(false);
-    } else {
-      setPage((page) => page + 1);
-      setNewPosts((users) => [...users, ...res]);
+  const loadMorePosts = async () => {
+    try {
+      setIsLoading(true);
+      const res = await getPosts(page);
+      if (res.length === 0) {
+        setHasMore(false);
+      } else {
+        setPage((page) => page + 1);
+        setNewPosts((users) => [...users, ...res]);
+      }
+    } catch (error) {
+      toast.error("There was a trouble displaying posts");
+    } finally {
+      setIsLoading(false);
     }
   };
+
   if (!newPosts) {
     return (
       <div className="w-[500px] flex flex-col items-center gap-2">
@@ -69,13 +79,15 @@ export const Posts: React.FC<PostsProps> = ({ currentUser, posts }) => {
       {newPosts.map((post) => (
         <Post currentUser={currentUser} post={post} key={post.id} />
       ))}
-      <div className="pb-5">
+      <div className="pb-5 h-10 w-full flex items-center justify-center">
         {hasMore ? (
-          <div ref={ref} className="flex">
+          isLoading ? (
             <Loader dark />
-          </div>
+          ) : (
+            <div ref={ref} />
+          )
         ) : (
-          <span className="text-sm text-priamry">No more posts to show</span>
+          <span className="text-sm text-primary">No more posts to show</span>
         )}
       </div>
     </div>

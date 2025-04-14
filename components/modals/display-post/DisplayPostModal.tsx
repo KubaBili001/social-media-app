@@ -11,23 +11,27 @@ import { IoMdClose } from "react-icons/io";
 
 //ui
 import { Button } from "../../ui/button";
-import Image from "next/image";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { CurrentUser } from "@/types/types";
+import { CurrentUser, PostWithMeta, User } from "@/types/types";
 import Modal from "../Modal";
 import { useRouter } from "next/navigation";
+import { PostDetails } from "./PostDetails";
+import { CommentSection } from "./CommentSection";
 
 interface DisplayPostModalProps {
   currentUser: CurrentUser;
+  post: PostWithMeta | null;
 }
 
 export const DisplayPostModal: React.FC<DisplayPostModalProps> = ({
   currentUser,
+  post,
 }) => {
+  //hooks
   const router = useRouter();
 
   //handlers
@@ -52,17 +56,16 @@ export const DisplayPostModal: React.FC<DisplayPostModalProps> = ({
           <TooltipContent>close</TooltipContent>
         </Tooltip>
 
-        <span>Create new post</span>
+        <span>{post?.user.name}&apos;s post</span>
       </div>
     );
   };
 
   const body = () => {
     return (
-      <div className="relative aspect-square bg-secondary h-full">
-        <div className="flex flex-col md:flex-row h-full">
-          <div className="relative aspect-square h-full">{/* img */}</div>
-          {/* comments */}
+      <div className="relative bg-secondary h-full">
+        <div className="flex h-full">
+          <PostDetails currentUser={currentUser} post={post} />
         </div>
       </div>
     );

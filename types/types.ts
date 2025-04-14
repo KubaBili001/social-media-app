@@ -9,8 +9,11 @@ export type FullUser = {
 };
 
 export type CurrentUser = {
-  id: string;
   email: string;
+} & User;
+
+export type User = {
+  id: string;
   image: string;
   name: string;
 };
@@ -36,8 +39,8 @@ export type PostWithMeta = {
     image: string | null;
   };
 
-  likedByCurrentUser: boolean;
+  hasLiked: boolean;
   likesCount: number;
   commentsCount: number;
-  commentedByCurrentUser: boolean;
+  hasCommented: boolean;
 };

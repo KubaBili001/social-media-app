@@ -61,7 +61,7 @@ export const PostForm: React.FC<PostFormProps> = ({
   };
 
   return (
-    <div className="relative flex flex-col items-end gap-3 h-[250px] w-full md:h-auto md:w-[250px] lg:w-[300px] xl:w-[350px] rounded-br-md p-3">
+    <div className="relative flex flex-col items-end bg-secondary gap-3 md:h-auto w-[250px] lg:w-[300px] xl:w-[350px] rounded-br-md p-3">
       <div className="flex gap-3 items-center w-full">
         <Image
           src={currentUser.image}

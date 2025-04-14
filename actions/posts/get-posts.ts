@@ -14,13 +14,13 @@ export async function getPosts(page: number = 1) {
     return [];
   }
 
-  const numberOfPosts = 2;
-  const offset = (page - 1) * numberOfPosts;
+  const take = 2;
+  const skip = (page - 1) * take;
 
   const posts = await get({
     currentUserId: userId,
-    numberOfPosts,
-    offset,
+    take,
+    skip,
   });
 
   if (!posts) return [];

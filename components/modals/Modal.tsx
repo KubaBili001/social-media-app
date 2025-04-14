@@ -15,16 +15,14 @@ export default function Modal({
   body,
   footer,
 }: ModalProps): ReactElement | null {
-  // State
-
   if (!isOpen) {
     return null;
   }
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-secondary/20 outline-none focus:outline-none">
-        <div className="bg-background rounded-md relative w-full h-auto md:h-[500px] md:w-auto transition-[width]">
+      <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-background/50 outline-none focus:outline-none">
+        <div className="bg-background rounded-md relative h-[500px] w-auto transition-[width]">
           {/* HEADER */}
           {header}
 

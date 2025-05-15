@@ -1,16 +1,16 @@
 import prisma from "@/lib/prisma";
 
-export const createPost = async (data: {
-  text: string;
-  photo: string;
-  createdBy: string;
-}) => {
+export const createPost = async (
+  text: string,
+  photo: string,
+  createdBy: string
+) => {
   try {
     const post = await prisma.post.create({
       data: {
-        text: data.text,
-        photo: data.photo,
-        createdBy: data.createdBy,
+        text: text,
+        photo: photo,
+        createdBy: createdBy,
       },
     });
 
@@ -20,15 +20,15 @@ export const createPost = async (data: {
   }
 };
 
-export const getPosts = async (data: {
-  currentUserId: string;
-  take: number;
-  skip: number;
-}) => {
+export const getPosts = async (
+  currentUserId: string,
+  take: number,
+  skip: number
+) => {
   try {
     const followedUserIds = await prisma.follow.findMany({
       where: {
-        followerId: data.currentUserId,
+        followerId: currentUserId,
       },
       select: {
         userId: true,
@@ -39,13 +39,10 @@ export const getPosts = async (data: {
 
     const posts = await prisma.post.findMany({
       where: {
-        OR: [
-          { createdBy: data.currentUserId },
-          { createdBy: { in: followedIds } },
-        ],
+        OR: [{ createdBy: currentUserId }, { createdBy: { in: followedIds } }],
       },
-      skip: data.skip,
-      take: data.take,
+      skip: skip,
+      take: take,
       orderBy: {
         postedDate: "desc",
       },
@@ -70,7 +67,7 @@ export const getPosts = async (data: {
 
     const userLikes = await prisma.like.findMany({
       where: {
-        userId: data.currentUserId,
+        userId: currentUserId,
         postId: { in: postIds },
       },
       select: {
@@ -80,7 +77,7 @@ export const getPosts = async (data: {
 
     const userComments = await prisma.comment.findMany({
       where: {
-        createdBy: data.currentUserId,
+        createdBy: currentUserId,
         postId: { in: postIds },
       },
       select: {

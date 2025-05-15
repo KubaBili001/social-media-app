@@ -16,11 +16,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { CurrentUser, PostWithMeta, User } from "@/types/types";
+import { CurrentUser, PostWithMeta } from "@/types/types";
 import Modal from "../Modal";
 import { useRouter } from "next/navigation";
 import { PostDetails } from "./PostDetails";
-import { CommentSection } from "./CommentSection";
 
 interface DisplayPostModalProps {
   currentUser: CurrentUser;

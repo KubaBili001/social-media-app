@@ -23,6 +23,11 @@ export const getCommentsByPostId = async (
           image: true,
         },
       },
+      _count: {
+        select: {
+          responses: true,
+        },
+      },
     },
   });
 };

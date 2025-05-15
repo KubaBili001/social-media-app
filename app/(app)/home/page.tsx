@@ -5,8 +5,10 @@ import { Metadata } from "next";
 import { Posts } from "@/components/home-page/posts/Posts";
 
 //actions
-import { getPosts } from "@/actions/posts/get-posts";
-import getCurrentUser from "@/actions/users/user";
+import getCurrentUser from "@/actions/users/get-user";
+
+//services
+import { getPosts } from "@/services/get-posts";
 
 //types
 import { CurrentUser } from "@/types/types";

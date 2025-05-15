@@ -1,21 +1,19 @@
 import { MessageCircle } from "lucide-react";
 
-interface CommentButtonProps {
+interface CommentIconPRops {
   hasUserCommented: boolean;
 }
 
-export const CommentButton: React.FC<CommentButtonProps> = ({
+export const CommentIcon: React.FC<CommentIconPRops> = ({
   hasUserCommented,
 }) => {
-  const handleClick = async () => {};
-
   return (
-    <div onClick={handleClick} className="cursor-pointer">
+    <>
       {hasUserCommented ? (
         <MessageCircle className="fill-blue-500 text-blue-500 w-6 h-6" />
       ) : (
         <MessageCircle className="w-6 h-6" />
       )}
-    </div>
+    </>
   );
 };

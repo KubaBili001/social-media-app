@@ -69,10 +69,9 @@ export default function RegisterForm() {
         router.push("/sign-in");
       }
     } catch (error) {
+      setLoading(false);
       toast.error("An unexpected error occurred. Please try again later.");
       console.error("Registration error:", error);
-    } finally {
-      setLoading(false);
     }
   };
 

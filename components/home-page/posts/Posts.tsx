@@ -14,7 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 //components
 import { Post } from "./Post";
-import { getPosts } from "@/actions/posts/get-posts";
+import { getPosts } from "@/services/get-posts";
 import Loader from "@/components/ui/custom/Loader";
 import { toast } from "sonner";
 
@@ -47,12 +47,18 @@ export const Posts: React.FC<PostsProps> = ({ currentUser, posts }) => {
   const loadMorePosts = async () => {
     try {
       setIsLoading(true);
-      const res = await getPosts(page);
-      if (res.length === 0) {
+
+      const response = await fetch(
+        `/api/posts?userId=${currentUser.id}&page=${page}`
+      );
+
+      const posts = await response.json();
+
+      if (posts.length === 0) {
         setHasMore(false);
       } else {
         setPage((page) => page + 1);
-        setNewPosts((users) => [...users, ...res]);
+        setNewPosts((users) => [...users, ...posts]);
       }
     } catch (error) {
       toast.error("There was a trouble displaying posts");

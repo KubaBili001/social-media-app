@@ -1,9 +1,12 @@
 "use client";
-
-import { CurrentUser, PostWithMeta, User } from "@/types/types";
+//next
 import Image from "next/image";
-import { PostForm } from "../create-post/PostForm";
+
+//components
 import { CommentSection } from "./CommentSection";
+
+//types
+import { CurrentUser, PostWithMeta, User } from "@/types/types";
 
 interface PostDetailsProps {
   currentUser: CurrentUser;

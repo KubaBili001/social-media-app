@@ -62,15 +62,20 @@ model Post {
 }
 
 model Comment {
-  id          Int      @id @default(autoincrement())
-  text        String
-  createdBy   String
-  postId      Int
-  respondingTo Int?
-  postedDate  DateTime @default(now())
+  id           Int       @id @default(autoincrement())
+  text         String
+  createdBy    String
+  postId       Int
+  respondingTo Int?      
+  postedDate   DateTime  @default(now())
 
-  user        User    @relation(fields: [createdBy], references: [id])
-  post        Post    @relation(fields: [postId], references: [id])
+  user         User      @relation(fields: [createdBy], references: [id])
+  post         Post      @relation(fields: [postId], references: [id])
+
+  parent       Comment?  @relation("ResponseTo", fields: [respondingTo], references: [id])
+  responses    Comment[] @relation("ResponseTo")
+
+  @@index([respondingTo])
 }
 
 model Like {

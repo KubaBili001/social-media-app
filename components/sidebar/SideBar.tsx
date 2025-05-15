@@ -45,7 +45,7 @@ export function AppSidebar() {
       </div>
 
       <div
-        className={`hidden absolute md:flex flex-col md:transition-all h-full left-[var(--sidebar-width-md)] md:border-r ${
+        className={`hidden absolute md:flex flex-col md:transition-all h-full left-[var(--sidebar-width-md)] md:border-r bg-background ${
           isExtended ? "w-[300px] opacity-100 z-2" : "w-0 opacity-0 z-0"
         }`}
       >

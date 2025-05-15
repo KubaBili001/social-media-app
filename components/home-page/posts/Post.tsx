@@ -9,7 +9,7 @@ import { CurrentUser, PostWithMeta } from "@/types/types";
 
 //components
 import { LikeButton } from "./LikeButton";
-import { CommentButton } from "./CommentButton";
+import { CommentIcon } from "./CommentIcon";
 import Link from "next/link";
 
 interface PostProps {
@@ -34,7 +34,9 @@ export const Post: React.FC<PostProps> = ({ post, currentUser }) => {
         />
         <span className="text-sm">{post.user.name}</span>
         <span className="text-xl">&#x2022;</span>
-        <span className="text-sm">{post.postedDate.toLocaleDateString()}</span>
+        <span className="text-sm">
+          {new Date(post.postedDate).toLocaleDateString()}
+        </span>
       </div>
 
       {/* BODY */}
@@ -51,7 +53,7 @@ export const Post: React.FC<PostProps> = ({ post, currentUser }) => {
             isLiked={post.hasLiked}
             setNumberOfLikes={setNumberOfLikes}
           />
-          <CommentButton hasUserCommented={post.hasCommented} />
+          <CommentIcon hasUserCommented={post.hasCommented} />
         </div>
         <span className="text-sm">
           {numberOfLikes} {numberOfLikes === 1 ? "like" : "likes"}

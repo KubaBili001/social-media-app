@@ -1,7 +1,13 @@
-import { getPost } from "@/actions/posts/get-post";
-import getCurrentUser from "@/actions/users/user";
+//actions
+import getCurrentUser from "@/actions/users/get-user";
+
+//services
+import { getPost } from "@/services/get-post";
+
+//components
 import { DisplayPostModal } from "@/components/modals/display-post/DisplayPostModal";
-import { PostDetails } from "@/components/modals/display-post/PostDetails";
+
+//types
 import { CurrentUser, PostWithMeta } from "@/types/types";
 
 export default async function Post({ params }: { params: { id: string } }) {

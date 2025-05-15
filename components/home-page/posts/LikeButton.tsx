@@ -1,6 +1,6 @@
 "use client";
 
-import { changeLike } from "@/actions/posts/like";
+import { changeLike } from "@/actions/posts/edit-like";
 import { Heart } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

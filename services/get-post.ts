@@ -1,9 +1,7 @@
-"use server";
-
 //auth
 import { auth } from "@/auth";
 
-//actions
+//data
 import { getPostById } from "@/data/post";
 
 export async function getPost(postId: number) {
@@ -16,7 +14,5 @@ export async function getPost(postId: number) {
 
   const post = await getPostById(postId, userId);
 
-  if (!post) return null;
-
-  return post;
+  return post ?? null;
 }

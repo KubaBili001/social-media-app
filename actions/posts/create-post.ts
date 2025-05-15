@@ -40,11 +40,7 @@ export async function createPost(formData: FormData) {
 
   const imageURL = uploadResult.secure_url;
 
-  const post = await create({
-    text: text ?? "",
-    photo: imageURL as string,
-    createdBy: userId,
-  });
+  const post = await create(text ?? "", imageURL as string, userId);
 
   if (!post) {
     return { error: "There was an error while creating your post." };

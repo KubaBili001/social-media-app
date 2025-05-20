@@ -57,3 +57,24 @@ export const getRepliesByCommentId = async (
     },
   });
 };
+
+export const createComment = async ({
+  text,
+  postId,
+  createdBy,
+  respondingTo,
+}: {
+  text: string;
+  postId: number;
+  createdBy: string;
+  respondingTo?: number | null;
+}) => {
+  return await prisma.comment.create({
+    data: {
+      text,
+      postId,
+      createdBy,
+      respondingTo: respondingTo ?? null,
+    },
+  });
+};

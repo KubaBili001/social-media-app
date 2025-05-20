@@ -44,3 +44,20 @@ export type PostWithMeta = {
   commentsCount: number;
   hasCommented: boolean;
 };
+
+export type CommentWithMeta = {
+  id: number;
+  text: string;
+  createdBy: string;
+  postId: number;
+  respondingTo: number | null;
+  postedDate: Date;
+  user: {
+    id: string;
+    name: string | null;
+    image: string | null;
+  };
+  _count: {
+    responses: number;
+  };
+};

@@ -36,3 +36,9 @@ export const postSchema = z.object({
   text: z.string().max(250).optional(),
   image: z.string(),
 });
+
+export const commentSchema = z.object({
+  text: z.string().min(1),
+  postId: z.number(),
+  respondingTo: z.number().nullable().optional(),
+});

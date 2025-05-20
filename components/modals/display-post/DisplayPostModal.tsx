@@ -16,7 +16,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { CurrentUser, PostWithMeta } from "@/types/types";
+import { CommentWithMeta, CurrentUser, PostWithMeta } from "@/types/types";
 import Modal from "../Modal";
 import { useRouter } from "next/navigation";
 import { PostDetails } from "./PostDetails";
@@ -24,10 +24,12 @@ import { PostDetails } from "./PostDetails";
 interface DisplayPostModalProps {
   currentUser: CurrentUser;
   post: PostWithMeta | null;
+  comments: CommentWithMeta[];
 }
 
 export const DisplayPostModal: React.FC<DisplayPostModalProps> = ({
   currentUser,
+  comments,
   post,
 }) => {
   //hooks
